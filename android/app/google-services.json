@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "120225988259",
+    "project_id": "calme-64dbe",
+    "storage_bucket": "calme-64dbe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120225988259:android:d74566e58b7bdda5108916",
+        "android_client_info": {
+          "package_name": "com.extend.calme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120225988259-f32iebftd0snn6o3megp2jdp6f3sn3r1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo45gKjoXhTo4x1EdpEttBj4mvILPUo_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120225988259-ako6u59mhq4b1pu0tuc46sb6e8uvmten.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120225988259-7k3s56octiq6cjanahir9rp0620stlf4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.extend.calme.calme-mobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120225988259:android:6ee32e6e60ebff20108916",
+        "android_client_info": {
+          "package_name": "com.extend.calme.calme_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120225988259-f32iebftd0snn6o3megp2jdp6f3sn3r1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo45gKjoXhTo4x1EdpEttBj4mvILPUo_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120225988259-ako6u59mhq4b1pu0tuc46sb6e8uvmten.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "120225988259-7k3s56octiq6cjanahir9rp0620stlf4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.extend.calme.calme-mobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

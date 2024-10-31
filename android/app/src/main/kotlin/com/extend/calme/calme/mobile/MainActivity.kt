@@ -1,4 +1,4 @@
-package com.extend.calme.calme_mobile
+package com.extend.calme
 
 import io.flutter.embedding.android.FlutterActivity
 
