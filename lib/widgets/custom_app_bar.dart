@@ -6,7 +6,11 @@ import 'package:calme_mobile/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key, required this.title, this.actions});
+  const CustomAppBar({
+    required this.title,
+    super.key,
+    this.actions,
+  });
 
   final String title;
   final List<Widget>? actions;
@@ -14,12 +18,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final canPop = AutoRouter.of(context).canPop();
-    var widgets = <Widget>[];
-    widgets.addAll(actions ?? []);
+    final widgets = <Widget>[...?actions];
     if (widgets.isNotEmpty) {
-      widgets.add(const SizedBox(
-        width: Styles.defaultPadding,
-      ));
+      widgets.add(
+        const SizedBox(
+          width: Styles.defaultPadding,
+        ),
+      );
     }
     return AppBar(
       backgroundColor: ColorValues.background,
@@ -32,13 +37,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            !canPop
-                ? RoundedButton(
-                    child: Image.asset(
+            if (!canPop)
+              RoundedButton(
+                child: Image.asset(
                   'assets/core/logo.png',
                   width: 30,
-                ))
-                : const CustomBackButton(),
+                ),
+              )
+            else
+              const CustomBackButton(),
           ],
         ),
       ),

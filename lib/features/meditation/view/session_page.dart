@@ -1,12 +1,15 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'dart:async';
+
 import 'package:auto_route/annotations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calme_mobile/core/color_values.dart';
 import 'package:calme_mobile/core/styles.dart';
 import 'package:calme_mobile/data/models/meditation/meditation_model.dart';
+import 'package:calme_mobile/util/logger.dart';
 import 'package:calme_mobile/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 import 'package:unicons/unicons.dart';
@@ -14,8 +17,8 @@ import 'package:unicons/unicons.dart';
 @RoutePage()
 class SessionPage extends StatefulWidget {
   const SessionPage({
-    super.key,
     required this.meditationModel,
+    super.key,
   });
 
   final MeditationModel meditationModel;
@@ -27,6 +30,7 @@ class SessionPage extends StatefulWidget {
 class _SessionPageState extends State<SessionPage> {
   var _index = 0;
   var _isLoading = true;
+  int? _nowPlayingIndex;
   final _players = <AudioPlayer>[];
 
   @override
@@ -44,7 +48,7 @@ class _SessionPageState extends State<SessionPage> {
     for (final data in sessions) {
       final player = AudioPlayer();
       if (i == 0) {
-        await player.setSourceUrl(data.audioUrl);
+        await player.setAudioSource(AudioSource.uri(Uri.parse(data.audioUrl)));
       }
       _players.add(player);
       i++;
@@ -99,38 +103,39 @@ class _SessionPageState extends State<SessionPage> {
         SizedBox(
           height: 48,
           child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ColorValues.primary30,
-              ),
-              onPressed: () async {
-                final isMute = _players[_index].volume == 0;
-                if (isMute) {
-                  await _players[_index].setVolume(1);
-                } else {
-                  await _players[_index].setVolume(0);
-                }
-                setState(() {
-
-                });
-              },
-              child: Row(
-                children: [
-                  Icon(
-                    (_players[_index].volume) > 0 ? UniconsLine.volume : UniconsLine.volume_mute,
-                    color: ColorValues.white,
-                  ),
-                  const SizedBox(
-                    width: Styles.defaultSpacing,
-                  ),
-                  Text(
-                    (_players[_index].volume) > 0 ? 'Audio On' : 'Audio Off',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(color: ColorValues.white, fontSize: 14),
-                  ),
-                ],
-              )),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorValues.primary30,
+            ),
+            onPressed: () async {
+              final isMute = _players[_index].volume == 0;
+              if (isMute) {
+                await _players[_index].setVolume(1);
+              } else {
+                await _players[_index].setVolume(0);
+              }
+              setState(() {});
+            },
+            child: Row(
+              children: [
+                Icon(
+                  (_players[_index].volume) > 0
+                      ? UniconsLine.volume
+                      : UniconsLine.volume_mute,
+                  color: ColorValues.white,
+                ),
+                const SizedBox(
+                  width: Styles.defaultSpacing,
+                ),
+                Text(
+                  (_players[_index].volume) > 0 ? 'Audio On' : 'Audio Off',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(color: ColorValues.white, fontSize: 14),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -138,7 +143,7 @@ class _SessionPageState extends State<SessionPage> {
 
   Widget _buildDuration() {
     return StreamBuilder(
-      stream: _players[_index].onPositionChanged,
+      stream: _players[_index].positionStream,
       builder: (context, snapshot) {
         final d = snapshot.data ?? Duration.zero;
         final sDuration = d.toString().split('.').first.padLeft(8, '0');
@@ -146,68 +151,92 @@ class _SessionPageState extends State<SessionPage> {
           sDuration,
           style: Theme.of(context).textTheme.titleMedium,
         );
-      }
+      },
     );
   }
 
   Widget _buildButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Opacity(
-          opacity: _index == 0 ? 0 : 1,
-          child: _buildCircleButton(
-              icon: UniconsLine.arrow_left,
-              iconColor: ColorValues.primary50,
-              backgroundColor: ColorValues.primary10,
-              onTap: () {
-                if (_index != 0) {
-                  _changeIndex(true);
+    return StreamBuilder<Object>(
+      stream: _players[_index].playingStream,
+      builder: (context, snapshot) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Opacity(
+              opacity: _index == 0 ? 0 : 1,
+              child: _buildCircleButton(
+                icon: UniconsLine.arrow_left,
+                iconColor: ColorValues.primary50,
+                backgroundColor: ColorValues.primary10,
+                onTap: () {
+                  if (_index != 0) {
+                    _changeIndex(true);
+                  }
+                },
+                size: 40,
+              ),
+            ),
+            const SizedBox(
+              width: Styles.defaultSpacing,
+            ),
+            _buildCircleButton(
+              icon: _players[_index].playing
+                  ? UniconsLine.pause
+                  : UniconsLine.play,
+              iconColor: ColorValues.white,
+              backgroundColor: ColorValues.primary50,
+              onTap: () async {
+                logger.d('clicked in index $_index $_nowPlayingIndex');
+                if (_nowPlayingIndex != null && _nowPlayingIndex != _index) {
+                  unawaited(_players[_nowPlayingIndex!].pause());
+                  logger.d('pause test $_nowPlayingIndex');
+                  unawaited(
+                    _players[_index].setAudioSource(
+                      AudioSource.uri(
+                        Uri.parse(
+                          widget.meditationModel.sessions[_index].audioUrl,
+                        ),
+                      ),
+                    ),
+                  );
                 }
-              },
-              size: 40),
-        ),
-        const SizedBox(
-          width: Styles.defaultSpacing,
-        ),
-        _buildCircleButton(
-            icon: _players[_index].state == PlayerState.playing ? UniconsLine.pause:  UniconsLine.play,
-            iconColor: ColorValues.white,
-            backgroundColor: ColorValues.primary50,
-            onTap: () async {
-              if (_players[_index].state == PlayerState.playing) {
-                await _players[_index].pause();
-              } else {
-                await _players[_index].play(UrlSource(widget.meditationModel.sessions[_index].audioUrl));
-              }
-              setState(() {
-
-              });
-            },
-            size: 64),
-        const SizedBox(
-          width: Styles.defaultSpacing,
-        ),
-        Opacity(
-          opacity: _index == widget.meditationModel.sessions.length - 1 ? 0 : 1,
-          child: _buildCircleButton(
-              icon: UniconsLine.arrow_right,
-              iconColor: ColorValues.primary50,
-              backgroundColor: ColorValues.primary10,
-              onTap: () {
-                if (_index != widget.meditationModel.sessions.length - 1) {
-                  _changeIndex(false);
+                if (_players[_index].playing) {
+                  unawaited(_players[_index].pause());
+                  _nowPlayingIndex = null;
+                } else {
+                  unawaited(_players[_index].play());
+                  _nowPlayingIndex = _index;
                 }
+                logger.d('now playing index $_nowPlayingIndex');
+                setState(() {});
               },
-              size: 40),
-        ),
-      ],
+              size: 64,
+            ),
+            const SizedBox(
+              width: Styles.defaultSpacing,
+            ),
+            Opacity(
+              opacity:
+                  _index == widget.meditationModel.sessions.length - 1 ? 0 : 1,
+              child: _buildCircleButton(
+                icon: UniconsLine.arrow_right,
+                iconColor: ColorValues.primary50,
+                backgroundColor: ColorValues.primary10,
+                onTap: () {
+                  if (_index != widget.meditationModel.sessions.length - 1) {
+                    _changeIndex(false);
+                  }
+                },
+                size: 40,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
   Future<void> _changeIndex(bool isPrevious) async {
-    await _players[_index].pause();
     if (isPrevious) {
       setState(() {
         _index--;
@@ -219,12 +248,13 @@ class _SessionPageState extends State<SessionPage> {
     }
   }
 
-  Widget _buildCircleButton(
-      {required IconData icon,
-      required Color iconColor,
-      required Color backgroundColor,
-      required double size,
-      VoidCallback? onTap}) {
+  Widget _buildCircleButton({
+    required IconData icon,
+    required Color iconColor,
+    required Color backgroundColor,
+    required double size,
+    VoidCallback? onTap,
+  }) {
     return RawMaterialButton(
       onPressed: onTap,
       fillColor: backgroundColor,
