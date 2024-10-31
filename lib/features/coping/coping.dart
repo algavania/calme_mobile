@@ -1,0 +1,1 @@
+export 'view/coping_page.dart';

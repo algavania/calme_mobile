@@ -22,9 +22,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 mixin _$UserModel {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String? get imageUrl => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
   @JsonKey(includeToJson: false, includeFromJson: false)
   String? get id => throw _privateConstructorUsedError;
 
@@ -46,8 +46,8 @@ abstract class $UserModelCopyWith<$Res> {
   $Res call(
       {String name,
       String email,
-      String? imageUrl,
       @TimestampConverter() DateTime createdAt,
+      String? imageUrl,
       @JsonKey(includeToJson: false, includeFromJson: false) String? id});
 }
 
@@ -68,8 +68,8 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   $Res call({
     Object? name = null,
     Object? email = null,
-    Object? imageUrl = freezed,
     Object? createdAt = null,
+    Object? imageUrl = freezed,
     Object? id = freezed,
   }) {
     return _then(_value.copyWith(
@@ -81,14 +81,14 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      imageUrl: freezed == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -108,8 +108,8 @@ abstract class _$$UserModelImplCopyWith<$Res>
   $Res call(
       {String name,
       String email,
-      String? imageUrl,
       @TimestampConverter() DateTime createdAt,
+      String? imageUrl,
       @JsonKey(includeToJson: false, includeFromJson: false) String? id});
 }
 
@@ -128,8 +128,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? email = null,
-    Object? imageUrl = freezed,
     Object? createdAt = null,
+    Object? imageUrl = freezed,
     Object? id = freezed,
   }) {
     return _then(_$UserModelImpl(
@@ -141,14 +141,14 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      imageUrl: freezed == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -163,8 +163,8 @@ class _$UserModelImpl implements _UserModel {
   const _$UserModelImpl(
       {required this.name,
       required this.email,
-      this.imageUrl,
       @TimestampConverter() required this.createdAt,
+      this.imageUrl,
       @JsonKey(includeToJson: false, includeFromJson: false) this.id});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -175,17 +175,17 @@ class _$UserModelImpl implements _UserModel {
   @override
   final String email;
   @override
-  final String? imageUrl;
-  @override
   @TimestampConverter()
   final DateTime createdAt;
+  @override
+  final String? imageUrl;
   @override
   @JsonKey(includeToJson: false, includeFromJson: false)
   final String? id;
 
   @override
   String toString() {
-    return 'UserModel(name: $name, email: $email, imageUrl: $imageUrl, createdAt: $createdAt, id: $id)';
+    return 'UserModel(name: $name, email: $email, createdAt: $createdAt, imageUrl: $imageUrl, id: $id)';
   }
 
   @override
@@ -195,17 +195,17 @@ class _$UserModelImpl implements _UserModel {
             other is _$UserModelImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
             (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, name, email, imageUrl, createdAt, id);
+      Object.hash(runtimeType, name, email, createdAt, imageUrl, id);
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -227,8 +227,8 @@ abstract class _UserModel implements UserModel {
   const factory _UserModel(
       {required final String name,
       required final String email,
-      final String? imageUrl,
       @TimestampConverter() required final DateTime createdAt,
+      final String? imageUrl,
       @JsonKey(includeToJson: false, includeFromJson: false)
       final String? id}) = _$UserModelImpl;
 
@@ -240,10 +240,10 @@ abstract class _UserModel implements UserModel {
   @override
   String get email;
   @override
-  String? get imageUrl;
-  @override
   @TimestampConverter()
   DateTime get createdAt;
+  @override
+  String? get imageUrl;
   @override
   @JsonKey(includeToJson: false, includeFromJson: false)
   String? get id;
