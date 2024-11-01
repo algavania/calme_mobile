@@ -18,26 +18,32 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
+  flutter_blue_plus: ^1.33.5
   flutter_card_swiper: ^7.0.2
+  flutter_dotenv: ^5.2.1
   flutter_localizations:
     sdk: flutter
+  flutter_native_splash: ^2.4.2
   flutter_spinkit: ^5.2.1
   flutter_svg: ^2.0.10+1
   flutter_svg_provider: ^1.0.7
   freezed_annotation: ^2.4.4
   get_it: ^8.0.2
   google_fonts: ^6.2.1
+  health: ^11.1.0
   intl: ^0.19.0
   json_annotation: ^4.9.0
   just_audio: ^0.9.42
   loader_overlay: ^4.0.3
   logger: ^2.4.0
   percent_indicator: ^4.2.3
+  permission_handler: ^11.3.1
   shared_preferences: ^2.3.2
   sizer: ^3.0.4
   skeletonizer: ^1.4.2
   timeline_tile: ^2.0.0
   unicons: ^3.0.0
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   auto_route_generator: ^9.0.0
@@ -67,3 +73,15 @@ flutter:
     - assets/home/
     - assets/people/
     - assets/coping/
+    - .env
+
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/core/logo.png
+
+  android_12:
+    image: assets/core/logo.png
+    icon_background_color: "#ffffff"
+
+  web: false

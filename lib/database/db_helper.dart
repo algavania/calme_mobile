@@ -13,7 +13,4 @@ class DbHelper {
   static const questions = 'questions';
   static const journals = 'journals';
   static const journalAnswers = 'answers';
-
-  // TODO: Change this to real token, this token is disabled
-  static const token = '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';
 }

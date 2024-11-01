@@ -5,6 +5,8 @@ import 'package:calme_mobile/firebase_options.dart';
 import 'package:calme_mobile/injector/injector.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:health/health.dart';
 
 void main() async {
   await setup();
@@ -19,4 +21,6 @@ Future<void> setup() async {
   Injector.init();
   await Injector.instance.allReady();
   await SharedPreferencesService.init();
+  await Health().configure();
+  await dotenv.load();
 }

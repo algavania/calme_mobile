@@ -10,6 +10,7 @@ import 'package:calme_mobile/widgets/custom_text_field.dart';
 import 'package:calme_mobile/widgets/rounded_button.dart';
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg_provider;
 import 'package:loader_overlay/loader_overlay.dart';
@@ -27,8 +28,8 @@ class ChatbotPage extends StatefulWidget {
 class _ChatbotPageState extends State<ChatbotPage> {
   final TextEditingController _chatController = TextEditingController();
   final List<MessageModel> _list = [];
-  final _prompt =
-      'Jawab selayaknya kamu adalah seorang psikolog profesional. '
+  final _prompt = 'Jawab selayaknya kamu adalah seorang psikolog profesional. '
+      'Bahasanya casual saja. '
       'Di sini kita sedang chat dengan satu sama lain.';
   final _requestText = <Messages>[];
   late OpenAI _openAI;
@@ -36,7 +37,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
   @override
   void initState() {
     _openAI = OpenAI.instance.build(
-      token: DbHelper.token,
+      token: dotenv.env['OPENAI_API_KEY'] ?? '',
       baseOption: HttpSetup(receiveTimeout: const Duration(minutes: 5)),
       enableLog: true,
     );
@@ -86,6 +87,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
               MessageChatBoxWidget(
                 controller: _chatController,
                 onSend: () async {
+                  if (_chatController.text.trim().isEmpty) return;
                   context.loaderOverlay.show();
                   try {
                     final content = _chatController.text.trimLeft().trimRight();
@@ -94,7 +96,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                     final request = ChatCompleteText(
                       messages: _requestText.map((e) => e.toJson()).toList(),
                       maxToken: 500,
-                      model: GptTurbo16k0631Model(),
+                      model: Gpt4ChatModel(),
                     );
                     final response =
                         await _openAI.onChatCompletion(request: request);
