@@ -15,7 +15,7 @@ Fitur utama dari Calme adalah sebagai berikut:
 
 Terdapat 2 cara untuk bisa menikmati fitur-fitur dari Eco.in langsung dari Handphone Anda, yaitu:
 
-1. Install aplikasi melalui link [Google Drive](https://drive.google.com/drive/folders/16yCCQANS-QUhArZ9g4LTNODQN3qLFTU6?usp=sharing)
+1. Install aplikasi melalui link [Google Drive](https://drive.google.com/file/d/1YwUMtI2toe4O83ZIQflgm36qoaVVDhod/view?usp=sharing)
 2. Atau, jalankan perintah-perintah berikut secara berurutan melalui terminal Anda:
    - `git clone https://github.com/algavania/calme_mobile.git`
    - `cd calme_mobile`
