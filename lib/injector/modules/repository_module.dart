@@ -8,6 +8,9 @@ import 'package:calme_mobile/features/authentication/domain/repositories/auth_re
 import 'package:calme_mobile/features/coping/data/datasources/coping_remote_datasource.dart';
 import 'package:calme_mobile/features/coping/data/repositories/coping_repository_impl.dart';
 import 'package:calme_mobile/features/coping/domain/repositories/coping_repository.dart';
+import 'package:calme_mobile/features/fitconnect/data/datasources/fitconnect_remote_datasource.dart';
+import 'package:calme_mobile/features/fitconnect/data/repositories/fitconnect_repository_impl.dart';
+import 'package:calme_mobile/features/fitconnect/domain/repositories/fitconnect_repository.dart';
 import 'package:calme_mobile/features/journal/data/datasources/journal_remote_datasource.dart';
 import 'package:calme_mobile/features/journal/data/repositories/journal_repository_impl.dart';
 import 'package:calme_mobile/features/journal/domain/repositories/journal_repository.dart';
@@ -44,6 +47,11 @@ class RepositoryModule {
       ..registerFactory<ArticleRepository>(
             () => ArticleRepositoryImpl(
           Injector.instance<ArticleRemoteDataSource>(),
+        ),
+      )
+      ..registerFactory<FitConnectRepository>(
+            () => FitConnectRepositoryImpl(
+          Injector.instance<FitConnectRemoteDataSource>(),
         ),
       );
   }

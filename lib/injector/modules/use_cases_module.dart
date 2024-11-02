@@ -7,6 +7,11 @@ import 'package:calme_mobile/features/authentication/domain/usecases/logout.dart
 import 'package:calme_mobile/features/authentication/domain/usecases/register.dart';
 import 'package:calme_mobile/features/coping/domain/repositories/coping_repository.dart';
 import 'package:calme_mobile/features/coping/domain/usecases/get_copings.dart';
+import 'package:calme_mobile/features/fitconnect/domain/repositories/fitconnect_repository.dart';
+import 'package:calme_mobile/features/fitconnect/domain/usecases/get_heart_rates.dart';
+import 'package:calme_mobile/features/fitconnect/domain/usecases/get_sleep_quality.dart';
+import 'package:calme_mobile/features/fitconnect/domain/usecases/get_steps_count.dart';
+import 'package:calme_mobile/features/fitconnect/domain/usecases/request_health_permissions.dart';
 import 'package:calme_mobile/features/journal/domain/repositories/journal_repository.dart';
 import 'package:calme_mobile/features/journal/domain/usecases/get_journal_answers.dart';
 import 'package:calme_mobile/features/journal/domain/usecases/get_journal_questions.dart';
@@ -89,6 +94,28 @@ class UseCasesModule {
       ..registerLazySingleton<GetMeditationSessions>(
         () => GetMeditationSessions(
           Injector.instance<MeditationRepository>(),
+        ),
+      )
+
+      /// FitConnect Use Cases
+      ..registerLazySingleton<GetStepsCount>(
+        () => GetStepsCount(
+          Injector.instance<FitConnectRepository>(),
+        ),
+      )
+      ..registerLazySingleton<GetHeartRates>(
+            () => GetHeartRates(
+          Injector.instance<FitConnectRepository>(),
+        ),
+      )
+      ..registerLazySingleton<GetSleepQuality>(
+            () => GetSleepQuality(
+          Injector.instance<FitConnectRepository>(),
+        ),
+      )
+      ..registerLazySingleton<RequestHealthPermissions>(
+        () => RequestHealthPermissions(
+          Injector.instance<FitConnectRepository>(),
         ),
       );
   }

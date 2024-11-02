@@ -61,7 +61,7 @@ class JournalPage extends StatelessWidget {
                     _getData();
                   },
                   child: SingleChildScrollView(
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
                         // _buildTopSearchWidget(),

@@ -3,14 +3,13 @@ import 'package:calme_mobile/core/color_values.dart';
 import 'package:calme_mobile/core/styles.dart';
 import 'package:calme_mobile/data/models/article/article_model.dart';
 import 'package:calme_mobile/data/models/meditation/meditation_model.dart';
-import 'package:calme_mobile/error/exceptions.dart';
 import 'package:calme_mobile/features/article/view/bloc/article_bloc.dart';
+import 'package:calme_mobile/features/fitconnect/view/bloc/fitconnect_bloc.dart';
 import 'package:calme_mobile/features/meditation/view/bloc/meditation_bloc.dart';
 import 'package:calme_mobile/injector/injector.dart';
 import 'package:calme_mobile/l10n/l10n.dart';
 import 'package:calme_mobile/routes/router.dart';
 import 'package:calme_mobile/util/extensions.dart';
-import 'package:calme_mobile/util/logger.dart';
 import 'package:calme_mobile/widgets/article_card_widget.dart';
 import 'package:calme_mobile/widgets/custom_app_bar.dart';
 import 'package:calme_mobile/widgets/custom_button.dart';
@@ -26,146 +25,94 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:unicons/unicons.dart';
 
 @RoutePage()
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
-  final _meditationBloc = Injector.instance<MeditationBloc>();
-  final _articleBloc = Injector.instance<ArticleBloc>();
-  var _currentStepCount = 0;
-  final _stepGoal = 10000;
-  var _currentHeartRate = 0;
-  var _hasInstallHealthConnect = false;
 
-  @override
-  void initState() {
-    _getData();
-    super.initState();
-  }
+  final _meditationBloc = Injector.instance<MeditationBloc>();
+
+  final _articleBloc = Injector.instance<ArticleBloc>();
+
+  final _fitConnectBloc = Injector.instance<FitconnectBloc>();
 
   void _getData() {
     _meditationBloc.add(const MeditationEvent.getAllMeditations());
     _articleBloc.add(const ArticleEvent.getArticles());
-    Health().isHealthConnectAvailable().then((value) {
-      setState(() {
-        _hasInstallHealthConnect = value;
-      });
-      if (_hasInstallHealthConnect) {
-        fetchStepData().then(
-          (value) {
-            setState(() {});
-          },
-          onError: (error) {
-            context.showSnackBar(
-              message: error.toString(),
-              isSuccess: false,
-            );
-          },
-        );
-      }
-    });
-  }
-
-  Future<void> fetchStepData() async {
-    int? steps;
-    int? heartRates;
-
-    // define the types to get
-    final types = [
-      HealthDataType.STEPS,
-      HealthDataType.HEART_RATE,
-    ];
-
-    // requesting access to the data types before reading them
-    final requested = await Health().requestAuthorization(types);
-    if (!requested) {
-      throw Failure('Izinkan akses ke data kesehatan');
-    }
-    // get steps for today (i.e., since midnight)
-    final now = DateTime.now();
-    final midnight = DateTime(now.year, now.month, now.day);
-
-    var stepsPermission =
-        await Health().hasPermissions([HealthDataType.STEPS]) ?? false;
-    if (!stepsPermission) {
-      stepsPermission =
-          await Health().requestAuthorization([HealthDataType.STEPS]);
-    }
-
-    if (stepsPermission) {
-      try {
-        steps = await Health().getTotalStepsInInterval(midnight, now);
-      } catch (error) {
-        logger.d('Exception in getTotalStepsInInterval: $error');
-      }
-
-      logger.d('Total number of steps: $steps');
-    }
-
-    var heartRatePermission =
-        await Health().hasPermissions([HealthDataType.HEART_RATE]) ?? false;
-    if (!heartRatePermission) {
-      heartRatePermission =
-          await Health().requestAuthorization([HealthDataType.HEART_RATE]);
-    }
-
-    if (heartRatePermission) {
-      try {
-        // Fetch heart rate data
-        final heartRateData = await Health().getHealthDataFromTypes(
-          startTime: midnight,
-          endTime: now,
-          types: [HealthDataType.HEART_RATE],
-        );
-        final value = heartRateData.last.value.toJson()['numericValue'];
-        _currentHeartRate = int.parse(value.toString());
-      } catch (error) {
-        logger.d('Exception while fetching heart rate data: $error');
-      }
-
-      logger.d('Latest heart rate: $heartRates');
-    }
-    _currentStepCount = steps ?? 0;
+    _fitConnectBloc.add(const FitconnectEvent.checkHealthConnect());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: context.l10n.home,
-      ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: RefreshIndicator(
-          onRefresh: () async {
-            _getData();
+    _getData();
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<MeditationBloc, MeditationState>(
+          bloc: _meditationBloc,
+          listener: (context, state) {
+            state.meditations.maybeMap(
+              orElse: () {},
+              error: (s) {
+                context.showSnackBar(message: s.message, isSuccess: false);
+              },
+            );
           },
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildDayIntroductionSectionWidget(),
-                const SizedBox(height: Styles.defaultSpacing),
-                _buildFitnessWidget(),
-                const SizedBox(height: Styles.defaultSpacing),
-                _buildCopingToolboxWidget(),
-                // const SizedBox(height: Styles.defaultSpacing),
-                // _buildMeditationSectionWidget(),
-                const SizedBox(height: Styles.defaultSpacing),
-                _buildOtherMeditationSectionWidget(),
-                // const SizedBox(height: Styles.defaultSpacing),
-                // _buildBreathingExerciseSectionWidget(),
-                const SizedBox(height: Styles.defaultSpacing),
-                _buildArticleSectionWidget(),
-                const SizedBox(height: Styles.defaultSpacing),
-              ],
+        ),
+        BlocListener<ArticleBloc, ArticleState>(
+          bloc: _articleBloc,
+          listener: (context, state) {
+            state.articles.maybeMap(
+              orElse: () {},
+              error: (s) {
+                context.showSnackBar(message: s.message, isSuccess: false);
+              },
+            );
+          },
+        ),
+        BlocListener<FitconnectBloc, FitconnectState>(
+          bloc: _fitConnectBloc,
+          listener: (context, state) {
+            state.isHealthConnectAvailable.maybeMap(
+              orElse: () {},
+              error: (s) {
+                context.showSnackBar(message: s.message, isSuccess: false);
+              },
+            );
+          },
+        ),
+      ],
+      child: Scaffold(
+        appBar: CustomAppBar(
+          title: context.l10n.home,
+        ),
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: RefreshIndicator(
+            onRefresh: () async {
+              _getData();
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildDayIntroductionSectionWidget(context),
+                  const SizedBox(height: Styles.defaultSpacing),
+                  _buildFitnessWidget(),
+                  const SizedBox(height: Styles.defaultSpacing),
+                  _buildCopingToolboxWidget(context),
+                  // const SizedBox(height: Styles.defaultSpacing),
+                  // _buildMeditationSectionWidget(),
+                  const SizedBox(height: Styles.defaultSpacing),
+                  _buildOtherMeditationSectionWidget(context),
+                  // const SizedBox(height: Styles.defaultSpacing),
+                  // _buildBreathingExerciseSectionWidget(),
+                  const SizedBox(height: Styles.defaultSpacing),
+                  _buildArticleSectionWidget(context),
+                  const SizedBox(height: Styles.defaultSpacing),
+                ],
+              ),
             ),
           ),
         ),
@@ -174,59 +121,68 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildFitnessWidget() {
-    return Container(
-      width: _hasInstallHealthConnect ? null : 100.w,
-      color: Colors.white,
-      padding: const EdgeInsets.all(Styles.defaultPadding),
-      child: _hasInstallHealthConnect
-          ? SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: IntrinsicHeight(
-                child: Row(
+    return BlocBuilder<FitconnectBloc, FitconnectState>(
+      bloc: _fitConnectBloc,
+      builder: (context, state) {
+        final hasInstallHealthConnect = state.isHealthConnectAvailable
+            .maybeMap(orElse: () => false, data: (s) => s.data);
+        return Container(
+          width: hasInstallHealthConnect ? null : 100.w,
+          color: Colors.white,
+          padding: const EdgeInsets.all(Styles.defaultPadding),
+          child: hasInstallHealthConnect
+              ? SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildStepWidget(context),
+                        const SizedBox(
+                          width: Styles.defaultSpacing,
+                        ),
+                        _buildHeartRateWidget(context),
+                      ],
+                    ),
+                  ),
+                )
+              : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildStepWidget(),
                     const SizedBox(
-                      width: Styles.defaultSpacing,
+                      height: Styles.defaultSpacing,
                     ),
-                    _buildHeartRateWidget(),
+                    const Text(
+                      'Hubungkan Health Connect '
+                      'untuk melihat data kesehatanmu.',
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: Styles.bigSpacing,
+                    ),
+                    CustomButton(
+                      buttonText: 'Hubungkan',
+                      onPressed: () async {
+                        _fitConnectBloc.add(
+                          const FitconnectEvent.requestHealthPermissions(),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: Styles.defaultSpacing,
+                    ),
                   ],
                 ),
-              ),
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: Styles.defaultSpacing,
-                ),
-                const Text(
-                  'Hubungkan Health Connect untuk melihat data kesehatanmu.',
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: Styles.bigSpacing,
-                ),
-                CustomButton(
-                  buttonText: 'Hubungkan',
-                  onPressed: () async {
-                    if (!_hasInstallHealthConnect) {
-                      await Health().installHealthConnect();
-                    }
-                    _hasInstallHealthConnect =
-                        await Health().isHealthConnectAvailable();
-                    setState(() {});
-                  },
-                ),
-                const SizedBox(
-                  height: Styles.defaultSpacing,
-                ),
-              ],
-            ),
+        );
+      },
     );
   }
 
-  Widget _buildHeartRateWidget() {
+  Widget _buildHeartRateWidget(BuildContext context) {
+    final heartRates = _fitConnectBloc.state.heartRates
+        .maybeMap(orElse: () => <HealthDataPoint>[], data: (s) => s.data);
+    final totalHeartRates =
+        heartRates.isEmpty ? 0 : heartRates.last.value.toJson()['numericValue'];
     return Container(
       constraints: BoxConstraints(
         minWidth: 45.w,
@@ -272,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 RichText(
                                   text: TextSpan(
-                                    text: _currentHeartRate.toString(),
+                                    text: totalHeartRates.toString(),
                                     style:
                                         Theme.of(context).textTheme.labelLarge,
                                     children: [
@@ -307,7 +263,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildStepWidget() {
+  Widget _buildStepWidget(BuildContext context) {
+    final currentStepsCount = _fitConnectBloc.state.stepsCount
+        .maybeMap(orElse: () => 0, data: (s) => s.data);
+    const stepGoal = 10000;
     return Container(
       width: 45.w,
       padding: const EdgeInsets.all(Styles.defaultPadding),
@@ -344,11 +303,11 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: _currentStepCount.toString(),
+                          text: currentStepsCount.toString(),
                           style: Theme.of(context).textTheme.labelLarge,
                           children: [
                             TextSpan(
-                              text: '\n/$_stepGoal',
+                              text: '\n/$stepGoal',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
@@ -366,7 +325,7 @@ class _HomePageState extends State<HomePage> {
           LinearPercentIndicator(
             lineHeight: 1.2.h,
             barRadius: const Radius.circular(100),
-            percent: _currentStepCount / _stepGoal,
+            percent: currentStepsCount / stepGoal,
             progressColor: Theme.of(context).primaryColor,
             backgroundColor: ColorValues.grey10,
           ),
@@ -375,7 +334,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCopingToolboxWidget() {
+  Widget _buildCopingToolboxWidget(BuildContext context) {
     final color = Theme.of(context).primaryColor;
     return GestureDetector(
       onTap: () {
@@ -434,7 +393,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildArticleSectionWidget() {
+  Widget _buildArticleSectionWidget(BuildContext context) {
     return Container(
       color: Colors.white,
       width: MediaQuery.of(context).size.width,
@@ -480,8 +439,8 @@ class _HomePageState extends State<HomePage> {
               final dummyList =
                   List.generate(3, (index) => generateMockArticleModel());
               return state.articles.maybeMap(
-                data: (s) => _buildArticleList(s.data, false),
-                orElse: () => _buildArticleList(dummyList, true),
+                data: (s) => _buildArticleList(s.data, false, context),
+                orElse: () => _buildArticleList(dummyList, true, context),
               );
             },
           ),
@@ -491,7 +450,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildArticleList(List<ArticleModel> list, bool isLoading) {
+  Widget _buildArticleList(
+    List<ArticleModel> list,
+    bool isLoading,
+    BuildContext context,
+  ) {
     return Skeletonizer(
       enabled: isLoading,
       child: ListView.separated(
@@ -504,14 +467,14 @@ class _HomePageState extends State<HomePage> {
           child: ArticleCardWidget(articleModel: list[i]),
         ),
         separatorBuilder: (_, __) => const SizedBox(
-          height: Styles.mediumSpacing,
+          height: Styles.defaultSpacing,
         ),
         itemCount: list.length,
       ),
     );
   }
 
-  Widget _buildBreathingExerciseSectionWidget() {
+  Widget _buildBreathingExerciseSectionWidget(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -565,7 +528,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildOtherMeditationSectionWidget() {
+  Widget _buildOtherMeditationSectionWidget(BuildContext context) {
     return Container(
       color: Colors.white,
       width: MediaQuery.of(context).size.width,
@@ -611,8 +574,8 @@ class _HomePageState extends State<HomePage> {
               final dummyList =
                   List.generate(3, (index) => generateMockMeditationModel());
               return state.meditations.maybeMap(
-                data: (s) => _buildMeditationList(s.data, false),
-                orElse: () => _buildMeditationList(dummyList, true),
+                data: (s) => _buildMeditationList(s.data, false, context),
+                orElse: () => _buildMeditationList(dummyList, true, context),
               );
             },
           ),
@@ -621,7 +584,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildMeditationList(List<MeditationModel> list, bool isLoading) {
+  Widget _buildMeditationList(
+    List<MeditationModel> list,
+    bool isLoading,
+    BuildContext context,
+  ) {
     return Skeletonizer(
       enabled: isLoading,
       child: ListView.separated(
@@ -642,7 +609,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildDayIntroductionSectionWidget() {
+  Widget _buildDayIntroductionSectionWidget(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
@@ -702,7 +669,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildTopSearchWidget() {
+  Widget _buildTopSearchWidget(BuildContext context) {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.all(Styles.defaultPadding),

@@ -17,7 +17,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: [
-        const HomeRoute(),
+        HomeRoute(),
         MeditationRoute(),
         ArticleRoute(),
         JournalRoute(),
