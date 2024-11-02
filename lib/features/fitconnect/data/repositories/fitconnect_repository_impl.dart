@@ -29,4 +29,12 @@ class FitConnectRepositoryImpl extends FitConnectRepository {
   Future<Either<Failure, bool>> requestHealthPermission() {
     return safeCall(dataSource.requestHealthPermission);
   }
+
+  @override
+  Future<Either<Failure, String>> getAnalytics(
+    int steps,
+    List<HealthDataPoint> heartRates,
+  ) {
+    return safeCall(() => dataSource.getAnalytics(steps, heartRates));
+  }
 }

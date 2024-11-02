@@ -7,6 +7,7 @@ class FitconnectState with _$FitconnectState {
     required AsyncValue<List<HealthDataPoint>> heartRates,
     required AsyncValue<List<HealthDataPoint>> sleepQualities,
     required AsyncValue<bool> isHealthConnectAvailable,
+    required AsyncValue<String> analytics,
   }) = _FitconnectState;
 
   factory FitconnectState.initial() => const FitconnectState(
@@ -14,5 +15,6 @@ class FitconnectState with _$FitconnectState {
     heartRates: AsyncValue.loading(),
     sleepQualities: AsyncValue.loading(),
     isHealthConnectAvailable: AsyncValue.loading(),
+    analytics: AsyncValue.initial(),
   );
 }

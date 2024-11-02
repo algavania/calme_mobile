@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:calme_mobile/core/async_value.dart';
+import 'package:calme_mobile/features/fitconnect/data/datasources/fitconnect_remote_datasource.dart';
+import 'package:calme_mobile/features/fitconnect/domain/usecases/get_analytics.dart';
 import 'package:calme_mobile/features/fitconnect/domain/usecases/get_heart_rates.dart';
 import 'package:calme_mobile/features/fitconnect/domain/usecases/get_sleep_quality.dart';
 import 'package:calme_mobile/features/fitconnect/domain/usecases/get_steps_count.dart';
@@ -32,6 +34,9 @@ class FitconnectBloc extends Bloc<FitconnectEvent, FitconnectState> {
     on<_CheckHealthConnect>(
       _onCheckHealthConnectEvent,
     );
+    on<_GetAnalytics>(
+      _onGetAnalyticsEvent,
+    );
   }
 
   final _getHeartRates = Injector.instance<GetHeartRates>();
@@ -39,18 +44,50 @@ class FitconnectBloc extends Bloc<FitconnectEvent, FitconnectState> {
   final _getStepsCount = Injector.instance<GetStepsCount>();
   final _requestHealthPermissions =
       Injector.instance<RequestHealthPermissions>();
+  final _getAnalytics = Injector.instance<GetAnalytics>();
+
+  Future<void> _onGetAnalyticsEvent(
+    _GetAnalytics event,
+    Emitter<FitconnectState> emit,
+  ) async {
+    emit(state.copyWith(analytics: const AsyncValue.loading()));
+    final steps =
+        state.stepsCount.maybeMap(orElse: () => 0, data: (data) => data.data);
+    final heartRates = state.heartRates
+        .maybeMap(orElse: () => <HealthDataPoint>[], data: (data) => data.data);
+    final res = await _getAnalytics.call(GetAnalyticsParams(steps, heartRates));
+    res.fold(
+      (failure) {
+        emit(state.copyWith(analytics: AsyncValue.error(failure.message)));
+      },
+      (data) {
+        emit(state.copyWith(analytics: AsyncValue.data(data)));
+      },
+    );
+  }
 
   Future<void> _onCheckHealthConnectEvent(
     _CheckHealthConnect event,
     Emitter<FitconnectState> emit,
   ) async {
     emit(state.copyWith(isHealthConnectAvailable: const AsyncValue.loading()));
-    final res = await Health().isHealthConnectAvailable();
+    final res = await Health().isHealthConnectAvailable() &&
+        (await Health().hasPermissions([
+              HealthDataType.STEPS,
+              HealthDataType.HEART_RATE,
+              ...sleepTypes,
+            ]) ??
+            false);
     emit(
       state.copyWith(
         isHealthConnectAvailable: AsyncValue.data(res),
       ),
     );
+    if (res) {
+      add(const FitconnectEvent.getStepsCount());
+      add(const FitconnectEvent.getHeartRates());
+      add(const FitconnectEvent.getSleepQuality());
+    }
   }
 
   Future<void> _onRequestHealthPermissionsEvent(

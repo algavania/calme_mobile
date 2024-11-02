@@ -131,50 +131,111 @@ class HomePage extends StatelessWidget {
           color: Colors.white,
           padding: const EdgeInsets.all(Styles.defaultPadding),
           child: hasInstallHealthConnect
-              ? SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: IntrinsicHeight(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildStepWidget(context),
-                        const SizedBox(
-                          width: Styles.defaultSpacing,
-                        ),
-                        _buildHeartRateWidget(context),
-                      ],
-                    ),
+              ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildStepWidget(context),
+                      const SizedBox(
+                        width: Styles.defaultSpacing,
+                      ),
+                      _buildHeartRateWidget(context),
+                    ],
                   ),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: Styles.defaultSpacing,
-                    ),
-                    const Text(
-                      'Hubungkan Health Connect '
-                      'untuk melihat data kesehatanmu.',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      height: Styles.bigSpacing,
-                    ),
-                    CustomButton(
-                      buttonText: 'Hubungkan',
-                      onPressed: () async {
-                        _fitConnectBloc.add(
-                          const FitconnectEvent.requestHealthPermissions(),
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: Styles.defaultSpacing,
-                    ),
-                  ],
                 ),
+              ),
+              const SizedBox(
+                height: Styles.defaultPadding,
+              ),
+              _buildAnalyticsWidget(context),
+            ],
+          )
+              : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: Styles.defaultSpacing,
+              ),
+              const Text(
+                'Hubungkan Health Connect '
+                    'untuk melihat data kesehatanmu.',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: Styles.bigSpacing,
+              ),
+              CustomButton(
+                buttonText: 'Hubungkan',
+                onPressed: () async {
+                  _fitConnectBloc.add(
+                    const FitconnectEvent.requestHealthPermissions(),
+                  );
+                },
+              ),
+              const SizedBox(
+                height: Styles.defaultSpacing,
+              ),
+            ],
+          ),
         );
       },
+    );
+  }
+
+  Widget _buildAnalyticsWidget(BuildContext context) {
+    final analytics = _fitConnectBloc.state.analytics
+        .maybeMap(orElse: () => null, data: (s) => s.data);
+    final isLoading = _fitConnectBloc.state.analytics.maybeMap(
+      orElse: () => false,
+      loading: (_) => true,
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Analisis Kesehatanmu',
+          style: Theme
+              .of(context)
+              .textTheme
+              .labelLarge,
+        ),
+        const SizedBox(
+          height: Styles.defaultSpacing,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomButton(
+              buttonText: isLoading
+                  ? 'Loading...'
+                  : (analytics == null
+                  ? 'Generate Analisis'
+                  : 'Perbarui Analisis'),
+              onPressed: isLoading
+                  ? null
+                  : () {
+                _fitConnectBloc
+                    .add(const FitconnectEvent.getAnalytics());
+              },
+            ),
+            if (isLoading || analytics != null)Skeletonizer(
+              enabled: isLoading,
+              child: Text(
+                analytics ?? 'Lorem ipsum dolor sit amet',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodySmall,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -182,7 +243,7 @@ class HomePage extends StatelessWidget {
     final heartRates = _fitConnectBloc.state.heartRates
         .maybeMap(orElse: () => <HealthDataPoint>[], data: (s) => s.data);
     final totalHeartRates =
-        heartRates.isEmpty ? 0 : heartRates.last.value.toJson()['numericValue'];
+    heartRates.isEmpty ? 0 : heartRates.last.value.toJson()['numericValue'];
     return Container(
       constraints: BoxConstraints(
         minWidth: 45.w,
@@ -198,7 +259,10 @@ class HomePage extends StatelessWidget {
         children: [
           Text(
             'Detak jantung',
-            style: Theme.of(context).textTheme.labelLarge,
+            style: Theme
+                .of(context)
+                .textTheme
+                .labelLarge,
           ),
           Expanded(
             child: Column(
@@ -230,11 +294,15 @@ class HomePage extends StatelessWidget {
                                   text: TextSpan(
                                     text: totalHeartRates.toString(),
                                     style:
-                                        Theme.of(context).textTheme.labelLarge,
+                                    Theme
+                                        .of(context)
+                                        .textTheme
+                                        .labelLarge,
                                     children: [
                                       TextSpan(
                                         text: '\nbpm',
-                                        style: Theme.of(context)
+                                        style: Theme
+                                            .of(context)
                                             .textTheme
                                             .bodySmall,
                                       ),
@@ -249,9 +317,13 @@ class HomePage extends StatelessWidget {
                     ),
                     Text(
                       '>180bpm\n<80bpm',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: ColorValues.danger50,
-                          ),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(
+                        color: ColorValues.danger50,
+                      ),
                     ),
                   ],
                 ),
@@ -279,7 +351,10 @@ class HomePage extends StatelessWidget {
         children: [
           Text(
             'Langkah kaki',
-            style: Theme.of(context).textTheme.labelLarge,
+            style: Theme
+                .of(context)
+                .textTheme
+                .labelLarge,
           ),
           const SizedBox(
             height: Styles.defaultSpacing,
@@ -304,11 +379,17 @@ class HomePage extends StatelessWidget {
                       RichText(
                         text: TextSpan(
                           text: currentStepsCount.toString(),
-                          style: Theme.of(context).textTheme.labelLarge,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .labelLarge,
                           children: [
                             TextSpan(
                               text: '\n/$stepGoal',
-                              style: Theme.of(context).textTheme.bodySmall,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodySmall,
                             ),
                           ],
                         ),
@@ -326,7 +407,9 @@ class HomePage extends StatelessWidget {
             lineHeight: 1.2.h,
             barRadius: const Radius.circular(100),
             percent: currentStepsCount / stepGoal,
-            progressColor: Theme.of(context).primaryColor,
+            progressColor: Theme
+                .of(context)
+                .primaryColor,
             backgroundColor: ColorValues.grey10,
           ),
         ],
@@ -335,14 +418,19 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildCopingToolboxWidget(BuildContext context) {
-    final color = Theme.of(context).primaryColor;
+    final color = Theme
+        .of(context)
+        .primaryColor;
     return GestureDetector(
       onTap: () {
         AutoRouter.of(context).push(CopingRoute());
       },
       child: Container(
         color: color,
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         padding: const EdgeInsets.all(Styles.defaultPadding),
         child: Row(
           children: [
@@ -357,7 +445,8 @@ class HomePage extends StatelessWidget {
                 children: [
                   Text(
                     context.l10n.copingToolbox,
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .displaySmall
                         ?.copyWith(color: Colors.white),
@@ -367,7 +456,8 @@ class HomePage extends StatelessWidget {
                   ),
                   Text(
                     context.l10n.copingText,
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .bodySmall
                         ?.copyWith(color: Colors.white),
@@ -396,7 +486,10 @@ class HomePage extends StatelessWidget {
   Widget _buildArticleSectionWidget(BuildContext context) {
     return Container(
       color: Colors.white,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       padding: const EdgeInsets.all(Styles.defaultPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -406,7 +499,10 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: Text(
                   context.l10n.articleSectionText1,
-                  style: Theme.of(context).textTheme.labelLarge,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .labelLarge,
                 ),
               ),
               SizedBox(width: 1.w),
@@ -416,7 +512,8 @@ class HomePage extends StatelessWidget {
                 },
                 child: Text(
                   context.l10n.viewAll,
-                  style: Theme.of(context)
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .displaySmall
                       ?.copyWith(color: ColorValues.secondary50),
@@ -427,7 +524,8 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: Styles.mediumSpacing),
           Text(
             context.l10n.articleSectionText2,
-            style: Theme.of(context)
+            style: Theme
+                .of(context)
                 .textTheme
                 .bodySmall
                 ?.copyWith(color: ColorValues.grey50),
@@ -437,7 +535,7 @@ class HomePage extends StatelessWidget {
             bloc: _articleBloc,
             builder: (context, state) {
               final dummyList =
-                  List.generate(3, (index) => generateMockArticleModel());
+              List.generate(3, (index) => generateMockArticleModel());
               return state.articles.maybeMap(
                 data: (s) => _buildArticleList(s.data, false, context),
                 orElse: () => _buildArticleList(dummyList, true, context),
@@ -450,23 +548,24 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildArticleList(
-    List<ArticleModel> list,
-    bool isLoading,
-    BuildContext context,
-  ) {
+  Widget _buildArticleList(List<ArticleModel> list,
+      bool isLoading,
+      BuildContext context,) {
     return Skeletonizer(
       enabled: isLoading,
       child: ListView.separated(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (_, i) => GestureDetector(
-          onTap: () {
-            AutoRouter.of(context).push(DetailArticleRoute(article: list[i]));
-          },
-          child: ArticleCardWidget(articleModel: list[i]),
-        ),
-        separatorBuilder: (_, __) => const SizedBox(
+        itemBuilder: (_, i) =>
+            GestureDetector(
+              onTap: () {
+                AutoRouter.of(context).push(
+                    DetailArticleRoute(article: list[i]));
+              },
+              child: ArticleCardWidget(articleModel: list[i]),
+            ),
+        separatorBuilder: (_, __) =>
+        const SizedBox(
           height: Styles.defaultSpacing,
         ),
         itemCount: list.length,
@@ -497,7 +596,8 @@ class HomePage extends StatelessWidget {
               children: [
                 Text(
                   context.l10n.breathingExercise,
-                  style: Theme.of(context)
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .labelLarge
                       ?.copyWith(color: Colors.white),
@@ -505,7 +605,8 @@ class HomePage extends StatelessWidget {
                 const SizedBox(height: Styles.defaultSpacing),
                 Text(
                   context.l10n.breathingExerciseText,
-                  style: Theme.of(context)
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .bodySmall
                       ?.copyWith(color: Colors.white),
@@ -531,7 +632,10 @@ class HomePage extends StatelessWidget {
   Widget _buildOtherMeditationSectionWidget(BuildContext context) {
     return Container(
       color: Colors.white,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       padding: const EdgeInsets.all(Styles.defaultPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -541,7 +645,10 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: Text(
                   context.l10n.otherMeditation,
-                  style: Theme.of(context).textTheme.labelLarge,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .labelLarge,
                 ),
               ),
               SizedBox(width: 1.w),
@@ -551,7 +658,8 @@ class HomePage extends StatelessWidget {
                 },
                 child: Text(
                   context.l10n.viewAll,
-                  style: Theme.of(context)
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .displaySmall
                       ?.copyWith(color: ColorValues.secondary50),
@@ -562,7 +670,8 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: Styles.mediumSpacing),
           Text(
             context.l10n.viewPlaylistText,
-            style: Theme.of(context)
+            style: Theme
+                .of(context)
                 .textTheme
                 .bodySmall
                 ?.copyWith(color: ColorValues.grey50),
@@ -572,7 +681,7 @@ class HomePage extends StatelessWidget {
             bloc: _meditationBloc,
             builder: (context, state) {
               final dummyList =
-                  List.generate(3, (index) => generateMockMeditationModel());
+              List.generate(3, (index) => generateMockMeditationModel());
               return state.meditations.maybeMap(
                 data: (s) => _buildMeditationList(s.data, false, context),
                 orElse: () => _buildMeditationList(dummyList, true, context),
@@ -584,24 +693,24 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildMeditationList(
-    List<MeditationModel> list,
-    bool isLoading,
-    BuildContext context,
-  ) {
+  Widget _buildMeditationList(List<MeditationModel> list,
+      bool isLoading,
+      BuildContext context,) {
     return Skeletonizer(
       enabled: isLoading,
       child: ListView.separated(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (_, i) => GestureDetector(
-          onTap: () {
-            AutoRouter.of(context)
-                .push(MeditationDetailRoute(meditationModel: list[i]));
-          },
-          child: MeditationCardWidget(meditationModel: list[i]),
-        ),
-        separatorBuilder: (_, __) => const SizedBox(
+        itemBuilder: (_, i) =>
+            GestureDetector(
+              onTap: () {
+                AutoRouter.of(context)
+                    .push(MeditationDetailRoute(meditationModel: list[i]));
+              },
+              child: MeditationCardWidget(meditationModel: list[i]),
+            ),
+        separatorBuilder: (_, __) =>
+        const SizedBox(
           height: Styles.mediumSpacing,
         ),
         itemCount: list.length,
@@ -611,7 +720,10 @@ class HomePage extends StatelessWidget {
 
   Widget _buildDayIntroductionSectionWidget(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       decoration: const BoxDecoration(
         color: Colors.white,
         image: DecorationImage(
@@ -629,7 +741,10 @@ class HomePage extends StatelessWidget {
           children: [
             Text(
               context.l10n.howIsYourDay,
-              style: Theme.of(context).textTheme.labelLarge,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .labelLarge,
             ),
             const SizedBox(height: 8),
             Row(
@@ -642,7 +757,8 @@ class HomePage extends StatelessWidget {
                     children: [
                       Text(
                         context.l10n.introductionDayText1,
-                        style: Theme.of(context)
+                        style: Theme
+                            .of(context)
                             .textTheme
                             .bodyMedium
                             ?.copyWith(color: ColorValues.grey50),
@@ -690,7 +806,9 @@ class HomePage extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Styles.defaultBorder),
               border: Border.all(color: ColorValues.primary10),
-              color: Theme.of(context).primaryColor,
+              color: Theme
+                  .of(context)
+                  .primaryColor,
             ),
           ),
         ],

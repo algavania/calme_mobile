@@ -14,4 +14,6 @@ class FitconnectEvent with _$FitconnectEvent {
 
   const factory FitconnectEvent.requestHealthPermissions() =
       _RequestHealthPermissions;
+
+  const factory FitconnectEvent.getAnalytics() = _GetAnalytics;
 }

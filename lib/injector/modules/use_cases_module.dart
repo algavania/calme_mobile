@@ -8,6 +8,7 @@ import 'package:calme_mobile/features/authentication/domain/usecases/register.da
 import 'package:calme_mobile/features/coping/domain/repositories/coping_repository.dart';
 import 'package:calme_mobile/features/coping/domain/usecases/get_copings.dart';
 import 'package:calme_mobile/features/fitconnect/domain/repositories/fitconnect_repository.dart';
+import 'package:calme_mobile/features/fitconnect/domain/usecases/get_analytics.dart';
 import 'package:calme_mobile/features/fitconnect/domain/usecases/get_heart_rates.dart';
 import 'package:calme_mobile/features/fitconnect/domain/usecases/get_sleep_quality.dart';
 import 'package:calme_mobile/features/fitconnect/domain/usecases/get_steps_count.dart';
@@ -110,6 +111,11 @@ class UseCasesModule {
       )
       ..registerLazySingleton<GetSleepQuality>(
             () => GetSleepQuality(
+          Injector.instance<FitConnectRepository>(),
+        ),
+      )
+      ..registerLazySingleton<GetAnalytics>(
+            () => GetAnalytics(
           Injector.instance<FitConnectRepository>(),
         ),
       )

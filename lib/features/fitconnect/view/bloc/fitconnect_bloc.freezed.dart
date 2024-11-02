@@ -24,6 +24,7 @@ mixin _$FitconnectEvent {
     required TResult Function() getSleepQuality,
     required TResult Function() getStepsCount,
     required TResult Function() requestHealthPermissions,
+    required TResult Function() getAnalytics,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -34,6 +35,7 @@ mixin _$FitconnectEvent {
     TResult? Function()? getSleepQuality,
     TResult? Function()? getStepsCount,
     TResult? Function()? requestHealthPermissions,
+    TResult? Function()? getAnalytics,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -44,6 +46,7 @@ mixin _$FitconnectEvent {
     TResult Function()? getSleepQuality,
     TResult Function()? getStepsCount,
     TResult Function()? requestHealthPermissions,
+    TResult Function()? getAnalytics,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -56,6 +59,7 @@ mixin _$FitconnectEvent {
     required TResult Function(_GetStepsCount value) getStepsCount,
     required TResult Function(_RequestHealthPermissions value)
         requestHealthPermissions,
+    required TResult Function(_GetAnalytics value) getAnalytics,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -67,6 +71,7 @@ mixin _$FitconnectEvent {
     TResult? Function(_GetStepsCount value)? getStepsCount,
     TResult? Function(_RequestHealthPermissions value)?
         requestHealthPermissions,
+    TResult? Function(_GetAnalytics value)? getAnalytics,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -77,6 +82,7 @@ mixin _$FitconnectEvent {
     TResult Function(_GetSleepQuality value)? getSleepQuality,
     TResult Function(_GetStepsCount value)? getStepsCount,
     TResult Function(_RequestHealthPermissions value)? requestHealthPermissions,
+    TResult Function(_GetAnalytics value)? getAnalytics,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -150,6 +156,7 @@ class _$StartedImpl implements _Started {
     required TResult Function() getSleepQuality,
     required TResult Function() getStepsCount,
     required TResult Function() requestHealthPermissions,
+    required TResult Function() getAnalytics,
   }) {
     return started();
   }
@@ -163,6 +170,7 @@ class _$StartedImpl implements _Started {
     TResult? Function()? getSleepQuality,
     TResult? Function()? getStepsCount,
     TResult? Function()? requestHealthPermissions,
+    TResult? Function()? getAnalytics,
   }) {
     return started?.call();
   }
@@ -176,6 +184,7 @@ class _$StartedImpl implements _Started {
     TResult Function()? getSleepQuality,
     TResult Function()? getStepsCount,
     TResult Function()? requestHealthPermissions,
+    TResult Function()? getAnalytics,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -194,6 +203,7 @@ class _$StartedImpl implements _Started {
     required TResult Function(_GetStepsCount value) getStepsCount,
     required TResult Function(_RequestHealthPermissions value)
         requestHealthPermissions,
+    required TResult Function(_GetAnalytics value) getAnalytics,
   }) {
     return started(this);
   }
@@ -208,6 +218,7 @@ class _$StartedImpl implements _Started {
     TResult? Function(_GetStepsCount value)? getStepsCount,
     TResult? Function(_RequestHealthPermissions value)?
         requestHealthPermissions,
+    TResult? Function(_GetAnalytics value)? getAnalytics,
   }) {
     return started?.call(this);
   }
@@ -221,6 +232,7 @@ class _$StartedImpl implements _Started {
     TResult Function(_GetSleepQuality value)? getSleepQuality,
     TResult Function(_GetStepsCount value)? getStepsCount,
     TResult Function(_RequestHealthPermissions value)? requestHealthPermissions,
+    TResult Function(_GetAnalytics value)? getAnalytics,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -281,6 +293,7 @@ class _$CheckHealthConnectImpl implements _CheckHealthConnect {
     required TResult Function() getSleepQuality,
     required TResult Function() getStepsCount,
     required TResult Function() requestHealthPermissions,
+    required TResult Function() getAnalytics,
   }) {
     return checkHealthConnect();
   }
@@ -294,6 +307,7 @@ class _$CheckHealthConnectImpl implements _CheckHealthConnect {
     TResult? Function()? getSleepQuality,
     TResult? Function()? getStepsCount,
     TResult? Function()? requestHealthPermissions,
+    TResult? Function()? getAnalytics,
   }) {
     return checkHealthConnect?.call();
   }
@@ -307,6 +321,7 @@ class _$CheckHealthConnectImpl implements _CheckHealthConnect {
     TResult Function()? getSleepQuality,
     TResult Function()? getStepsCount,
     TResult Function()? requestHealthPermissions,
+    TResult Function()? getAnalytics,
     required TResult orElse(),
   }) {
     if (checkHealthConnect != null) {
@@ -325,6 +340,7 @@ class _$CheckHealthConnectImpl implements _CheckHealthConnect {
     required TResult Function(_GetStepsCount value) getStepsCount,
     required TResult Function(_RequestHealthPermissions value)
         requestHealthPermissions,
+    required TResult Function(_GetAnalytics value) getAnalytics,
   }) {
     return checkHealthConnect(this);
   }
@@ -339,6 +355,7 @@ class _$CheckHealthConnectImpl implements _CheckHealthConnect {
     TResult? Function(_GetStepsCount value)? getStepsCount,
     TResult? Function(_RequestHealthPermissions value)?
         requestHealthPermissions,
+    TResult? Function(_GetAnalytics value)? getAnalytics,
   }) {
     return checkHealthConnect?.call(this);
   }
@@ -352,6 +369,7 @@ class _$CheckHealthConnectImpl implements _CheckHealthConnect {
     TResult Function(_GetSleepQuality value)? getSleepQuality,
     TResult Function(_GetStepsCount value)? getStepsCount,
     TResult Function(_RequestHealthPermissions value)? requestHealthPermissions,
+    TResult Function(_GetAnalytics value)? getAnalytics,
     required TResult orElse(),
   }) {
     if (checkHealthConnect != null) {
@@ -412,6 +430,7 @@ class _$GetHeartRatesImpl implements _GetHeartRates {
     required TResult Function() getSleepQuality,
     required TResult Function() getStepsCount,
     required TResult Function() requestHealthPermissions,
+    required TResult Function() getAnalytics,
   }) {
     return getHeartRates();
   }
@@ -425,6 +444,7 @@ class _$GetHeartRatesImpl implements _GetHeartRates {
     TResult? Function()? getSleepQuality,
     TResult? Function()? getStepsCount,
     TResult? Function()? requestHealthPermissions,
+    TResult? Function()? getAnalytics,
   }) {
     return getHeartRates?.call();
   }
@@ -438,6 +458,7 @@ class _$GetHeartRatesImpl implements _GetHeartRates {
     TResult Function()? getSleepQuality,
     TResult Function()? getStepsCount,
     TResult Function()? requestHealthPermissions,
+    TResult Function()? getAnalytics,
     required TResult orElse(),
   }) {
     if (getHeartRates != null) {
@@ -456,6 +477,7 @@ class _$GetHeartRatesImpl implements _GetHeartRates {
     required TResult Function(_GetStepsCount value) getStepsCount,
     required TResult Function(_RequestHealthPermissions value)
         requestHealthPermissions,
+    required TResult Function(_GetAnalytics value) getAnalytics,
   }) {
     return getHeartRates(this);
   }
@@ -470,6 +492,7 @@ class _$GetHeartRatesImpl implements _GetHeartRates {
     TResult? Function(_GetStepsCount value)? getStepsCount,
     TResult? Function(_RequestHealthPermissions value)?
         requestHealthPermissions,
+    TResult? Function(_GetAnalytics value)? getAnalytics,
   }) {
     return getHeartRates?.call(this);
   }
@@ -483,6 +506,7 @@ class _$GetHeartRatesImpl implements _GetHeartRates {
     TResult Function(_GetSleepQuality value)? getSleepQuality,
     TResult Function(_GetStepsCount value)? getStepsCount,
     TResult Function(_RequestHealthPermissions value)? requestHealthPermissions,
+    TResult Function(_GetAnalytics value)? getAnalytics,
     required TResult orElse(),
   }) {
     if (getHeartRates != null) {
@@ -543,6 +567,7 @@ class _$GetSleepQualityImpl implements _GetSleepQuality {
     required TResult Function() getSleepQuality,
     required TResult Function() getStepsCount,
     required TResult Function() requestHealthPermissions,
+    required TResult Function() getAnalytics,
   }) {
     return getSleepQuality();
   }
@@ -556,6 +581,7 @@ class _$GetSleepQualityImpl implements _GetSleepQuality {
     TResult? Function()? getSleepQuality,
     TResult? Function()? getStepsCount,
     TResult? Function()? requestHealthPermissions,
+    TResult? Function()? getAnalytics,
   }) {
     return getSleepQuality?.call();
   }
@@ -569,6 +595,7 @@ class _$GetSleepQualityImpl implements _GetSleepQuality {
     TResult Function()? getSleepQuality,
     TResult Function()? getStepsCount,
     TResult Function()? requestHealthPermissions,
+    TResult Function()? getAnalytics,
     required TResult orElse(),
   }) {
     if (getSleepQuality != null) {
@@ -587,6 +614,7 @@ class _$GetSleepQualityImpl implements _GetSleepQuality {
     required TResult Function(_GetStepsCount value) getStepsCount,
     required TResult Function(_RequestHealthPermissions value)
         requestHealthPermissions,
+    required TResult Function(_GetAnalytics value) getAnalytics,
   }) {
     return getSleepQuality(this);
   }
@@ -601,6 +629,7 @@ class _$GetSleepQualityImpl implements _GetSleepQuality {
     TResult? Function(_GetStepsCount value)? getStepsCount,
     TResult? Function(_RequestHealthPermissions value)?
         requestHealthPermissions,
+    TResult? Function(_GetAnalytics value)? getAnalytics,
   }) {
     return getSleepQuality?.call(this);
   }
@@ -614,6 +643,7 @@ class _$GetSleepQualityImpl implements _GetSleepQuality {
     TResult Function(_GetSleepQuality value)? getSleepQuality,
     TResult Function(_GetStepsCount value)? getStepsCount,
     TResult Function(_RequestHealthPermissions value)? requestHealthPermissions,
+    TResult Function(_GetAnalytics value)? getAnalytics,
     required TResult orElse(),
   }) {
     if (getSleepQuality != null) {
@@ -674,6 +704,7 @@ class _$GetStepsCountImpl implements _GetStepsCount {
     required TResult Function() getSleepQuality,
     required TResult Function() getStepsCount,
     required TResult Function() requestHealthPermissions,
+    required TResult Function() getAnalytics,
   }) {
     return getStepsCount();
   }
@@ -687,6 +718,7 @@ class _$GetStepsCountImpl implements _GetStepsCount {
     TResult? Function()? getSleepQuality,
     TResult? Function()? getStepsCount,
     TResult? Function()? requestHealthPermissions,
+    TResult? Function()? getAnalytics,
   }) {
     return getStepsCount?.call();
   }
@@ -700,6 +732,7 @@ class _$GetStepsCountImpl implements _GetStepsCount {
     TResult Function()? getSleepQuality,
     TResult Function()? getStepsCount,
     TResult Function()? requestHealthPermissions,
+    TResult Function()? getAnalytics,
     required TResult orElse(),
   }) {
     if (getStepsCount != null) {
@@ -718,6 +751,7 @@ class _$GetStepsCountImpl implements _GetStepsCount {
     required TResult Function(_GetStepsCount value) getStepsCount,
     required TResult Function(_RequestHealthPermissions value)
         requestHealthPermissions,
+    required TResult Function(_GetAnalytics value) getAnalytics,
   }) {
     return getStepsCount(this);
   }
@@ -732,6 +766,7 @@ class _$GetStepsCountImpl implements _GetStepsCount {
     TResult? Function(_GetStepsCount value)? getStepsCount,
     TResult? Function(_RequestHealthPermissions value)?
         requestHealthPermissions,
+    TResult? Function(_GetAnalytics value)? getAnalytics,
   }) {
     return getStepsCount?.call(this);
   }
@@ -745,6 +780,7 @@ class _$GetStepsCountImpl implements _GetStepsCount {
     TResult Function(_GetSleepQuality value)? getSleepQuality,
     TResult Function(_GetStepsCount value)? getStepsCount,
     TResult Function(_RequestHealthPermissions value)? requestHealthPermissions,
+    TResult Function(_GetAnalytics value)? getAnalytics,
     required TResult orElse(),
   }) {
     if (getStepsCount != null) {
@@ -808,6 +844,7 @@ class _$RequestHealthPermissionsImpl implements _RequestHealthPermissions {
     required TResult Function() getSleepQuality,
     required TResult Function() getStepsCount,
     required TResult Function() requestHealthPermissions,
+    required TResult Function() getAnalytics,
   }) {
     return requestHealthPermissions();
   }
@@ -821,6 +858,7 @@ class _$RequestHealthPermissionsImpl implements _RequestHealthPermissions {
     TResult? Function()? getSleepQuality,
     TResult? Function()? getStepsCount,
     TResult? Function()? requestHealthPermissions,
+    TResult? Function()? getAnalytics,
   }) {
     return requestHealthPermissions?.call();
   }
@@ -834,6 +872,7 @@ class _$RequestHealthPermissionsImpl implements _RequestHealthPermissions {
     TResult Function()? getSleepQuality,
     TResult Function()? getStepsCount,
     TResult Function()? requestHealthPermissions,
+    TResult Function()? getAnalytics,
     required TResult orElse(),
   }) {
     if (requestHealthPermissions != null) {
@@ -852,6 +891,7 @@ class _$RequestHealthPermissionsImpl implements _RequestHealthPermissions {
     required TResult Function(_GetStepsCount value) getStepsCount,
     required TResult Function(_RequestHealthPermissions value)
         requestHealthPermissions,
+    required TResult Function(_GetAnalytics value) getAnalytics,
   }) {
     return requestHealthPermissions(this);
   }
@@ -866,6 +906,7 @@ class _$RequestHealthPermissionsImpl implements _RequestHealthPermissions {
     TResult? Function(_GetStepsCount value)? getStepsCount,
     TResult? Function(_RequestHealthPermissions value)?
         requestHealthPermissions,
+    TResult? Function(_GetAnalytics value)? getAnalytics,
   }) {
     return requestHealthPermissions?.call(this);
   }
@@ -879,6 +920,7 @@ class _$RequestHealthPermissionsImpl implements _RequestHealthPermissions {
     TResult Function(_GetSleepQuality value)? getSleepQuality,
     TResult Function(_GetStepsCount value)? getStepsCount,
     TResult Function(_RequestHealthPermissions value)? requestHealthPermissions,
+    TResult Function(_GetAnalytics value)? getAnalytics,
     required TResult orElse(),
   }) {
     if (requestHealthPermissions != null) {
@@ -893,6 +935,143 @@ abstract class _RequestHealthPermissions implements FitconnectEvent {
 }
 
 /// @nodoc
+abstract class _$$GetAnalyticsImplCopyWith<$Res> {
+  factory _$$GetAnalyticsImplCopyWith(
+          _$GetAnalyticsImpl value, $Res Function(_$GetAnalyticsImpl) then) =
+      __$$GetAnalyticsImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$GetAnalyticsImplCopyWithImpl<$Res>
+    extends _$FitconnectEventCopyWithImpl<$Res, _$GetAnalyticsImpl>
+    implements _$$GetAnalyticsImplCopyWith<$Res> {
+  __$$GetAnalyticsImplCopyWithImpl(
+      _$GetAnalyticsImpl _value, $Res Function(_$GetAnalyticsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FitconnectEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$GetAnalyticsImpl implements _GetAnalytics {
+  const _$GetAnalyticsImpl();
+
+  @override
+  String toString() {
+    return 'FitconnectEvent.getAnalytics()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$GetAnalyticsImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function() checkHealthConnect,
+    required TResult Function() getHeartRates,
+    required TResult Function() getSleepQuality,
+    required TResult Function() getStepsCount,
+    required TResult Function() requestHealthPermissions,
+    required TResult Function() getAnalytics,
+  }) {
+    return getAnalytics();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function()? checkHealthConnect,
+    TResult? Function()? getHeartRates,
+    TResult? Function()? getSleepQuality,
+    TResult? Function()? getStepsCount,
+    TResult? Function()? requestHealthPermissions,
+    TResult? Function()? getAnalytics,
+  }) {
+    return getAnalytics?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function()? checkHealthConnect,
+    TResult Function()? getHeartRates,
+    TResult Function()? getSleepQuality,
+    TResult Function()? getStepsCount,
+    TResult Function()? requestHealthPermissions,
+    TResult Function()? getAnalytics,
+    required TResult orElse(),
+  }) {
+    if (getAnalytics != null) {
+      return getAnalytics();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_CheckHealthConnect value) checkHealthConnect,
+    required TResult Function(_GetHeartRates value) getHeartRates,
+    required TResult Function(_GetSleepQuality value) getSleepQuality,
+    required TResult Function(_GetStepsCount value) getStepsCount,
+    required TResult Function(_RequestHealthPermissions value)
+        requestHealthPermissions,
+    required TResult Function(_GetAnalytics value) getAnalytics,
+  }) {
+    return getAnalytics(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_CheckHealthConnect value)? checkHealthConnect,
+    TResult? Function(_GetHeartRates value)? getHeartRates,
+    TResult? Function(_GetSleepQuality value)? getSleepQuality,
+    TResult? Function(_GetStepsCount value)? getStepsCount,
+    TResult? Function(_RequestHealthPermissions value)?
+        requestHealthPermissions,
+    TResult? Function(_GetAnalytics value)? getAnalytics,
+  }) {
+    return getAnalytics?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_CheckHealthConnect value)? checkHealthConnect,
+    TResult Function(_GetHeartRates value)? getHeartRates,
+    TResult Function(_GetSleepQuality value)? getSleepQuality,
+    TResult Function(_GetStepsCount value)? getStepsCount,
+    TResult Function(_RequestHealthPermissions value)? requestHealthPermissions,
+    TResult Function(_GetAnalytics value)? getAnalytics,
+    required TResult orElse(),
+  }) {
+    if (getAnalytics != null) {
+      return getAnalytics(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _GetAnalytics implements FitconnectEvent {
+  const factory _GetAnalytics() = _$GetAnalyticsImpl;
+}
+
+/// @nodoc
 mixin _$FitconnectState {
   AsyncValue<int> get stepsCount => throw _privateConstructorUsedError;
   AsyncValue<List<HealthDataPoint>> get heartRates =>
@@ -901,6 +1080,7 @@ mixin _$FitconnectState {
       throw _privateConstructorUsedError;
   AsyncValue<bool> get isHealthConnectAvailable =>
       throw _privateConstructorUsedError;
+  AsyncValue<String> get analytics => throw _privateConstructorUsedError;
 
   /// Create a copy of FitconnectState
   /// with the given fields replaced by the non-null parameter values.
@@ -919,12 +1099,14 @@ abstract class $FitconnectStateCopyWith<$Res> {
       {AsyncValue<int> stepsCount,
       AsyncValue<List<HealthDataPoint>> heartRates,
       AsyncValue<List<HealthDataPoint>> sleepQualities,
-      AsyncValue<bool> isHealthConnectAvailable});
+      AsyncValue<bool> isHealthConnectAvailable,
+      AsyncValue<String> analytics});
 
   $AsyncValueCopyWith<int, $Res> get stepsCount;
   $AsyncValueCopyWith<List<HealthDataPoint>, $Res> get heartRates;
   $AsyncValueCopyWith<List<HealthDataPoint>, $Res> get sleepQualities;
   $AsyncValueCopyWith<bool, $Res> get isHealthConnectAvailable;
+  $AsyncValueCopyWith<String, $Res> get analytics;
 }
 
 /// @nodoc
@@ -946,6 +1128,7 @@ class _$FitconnectStateCopyWithImpl<$Res, $Val extends FitconnectState>
     Object? heartRates = null,
     Object? sleepQualities = null,
     Object? isHealthConnectAvailable = null,
+    Object? analytics = null,
   }) {
     return _then(_value.copyWith(
       stepsCount: null == stepsCount
@@ -964,6 +1147,10 @@ class _$FitconnectStateCopyWithImpl<$Res, $Val extends FitconnectState>
           ? _value.isHealthConnectAvailable
           : isHealthConnectAvailable // ignore: cast_nullable_to_non_nullable
               as AsyncValue<bool>,
+      analytics: null == analytics
+          ? _value.analytics
+          : analytics // ignore: cast_nullable_to_non_nullable
+              as AsyncValue<String>,
     ) as $Val);
   }
 
@@ -1009,6 +1196,16 @@ class _$FitconnectStateCopyWithImpl<$Res, $Val extends FitconnectState>
       return _then(_value.copyWith(isHealthConnectAvailable: value) as $Val);
     });
   }
+
+  /// Create a copy of FitconnectState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AsyncValueCopyWith<String, $Res> get analytics {
+    return $AsyncValueCopyWith<String, $Res>(_value.analytics, (value) {
+      return _then(_value.copyWith(analytics: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -1023,7 +1220,8 @@ abstract class _$$FitconnectStateImplCopyWith<$Res>
       {AsyncValue<int> stepsCount,
       AsyncValue<List<HealthDataPoint>> heartRates,
       AsyncValue<List<HealthDataPoint>> sleepQualities,
-      AsyncValue<bool> isHealthConnectAvailable});
+      AsyncValue<bool> isHealthConnectAvailable,
+      AsyncValue<String> analytics});
 
   @override
   $AsyncValueCopyWith<int, $Res> get stepsCount;
@@ -1033,6 +1231,8 @@ abstract class _$$FitconnectStateImplCopyWith<$Res>
   $AsyncValueCopyWith<List<HealthDataPoint>, $Res> get sleepQualities;
   @override
   $AsyncValueCopyWith<bool, $Res> get isHealthConnectAvailable;
+  @override
+  $AsyncValueCopyWith<String, $Res> get analytics;
 }
 
 /// @nodoc
@@ -1052,6 +1252,7 @@ class __$$FitconnectStateImplCopyWithImpl<$Res>
     Object? heartRates = null,
     Object? sleepQualities = null,
     Object? isHealthConnectAvailable = null,
+    Object? analytics = null,
   }) {
     return _then(_$FitconnectStateImpl(
       stepsCount: null == stepsCount
@@ -1070,6 +1271,10 @@ class __$$FitconnectStateImplCopyWithImpl<$Res>
           ? _value.isHealthConnectAvailable
           : isHealthConnectAvailable // ignore: cast_nullable_to_non_nullable
               as AsyncValue<bool>,
+      analytics: null == analytics
+          ? _value.analytics
+          : analytics // ignore: cast_nullable_to_non_nullable
+              as AsyncValue<String>,
     ));
   }
 }
@@ -1081,7 +1286,8 @@ class _$FitconnectStateImpl implements _FitconnectState {
       {required this.stepsCount,
       required this.heartRates,
       required this.sleepQualities,
-      required this.isHealthConnectAvailable});
+      required this.isHealthConnectAvailable,
+      required this.analytics});
 
   @override
   final AsyncValue<int> stepsCount;
@@ -1091,10 +1297,12 @@ class _$FitconnectStateImpl implements _FitconnectState {
   final AsyncValue<List<HealthDataPoint>> sleepQualities;
   @override
   final AsyncValue<bool> isHealthConnectAvailable;
+  @override
+  final AsyncValue<String> analytics;
 
   @override
   String toString() {
-    return 'FitconnectState(stepsCount: $stepsCount, heartRates: $heartRates, sleepQualities: $sleepQualities, isHealthConnectAvailable: $isHealthConnectAvailable)';
+    return 'FitconnectState(stepsCount: $stepsCount, heartRates: $heartRates, sleepQualities: $sleepQualities, isHealthConnectAvailable: $isHealthConnectAvailable, analytics: $analytics)';
   }
 
   @override
@@ -1110,12 +1318,14 @@ class _$FitconnectStateImpl implements _FitconnectState {
                 other.sleepQualities == sleepQualities) &&
             (identical(
                     other.isHealthConnectAvailable, isHealthConnectAvailable) ||
-                other.isHealthConnectAvailable == isHealthConnectAvailable));
+                other.isHealthConnectAvailable == isHealthConnectAvailable) &&
+            (identical(other.analytics, analytics) ||
+                other.analytics == analytics));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, stepsCount, heartRates,
-      sleepQualities, isHealthConnectAvailable);
+      sleepQualities, isHealthConnectAvailable, analytics);
 
   /// Create a copy of FitconnectState
   /// with the given fields replaced by the non-null parameter values.
@@ -1129,11 +1339,11 @@ class _$FitconnectStateImpl implements _FitconnectState {
 
 abstract class _FitconnectState implements FitconnectState {
   const factory _FitconnectState(
-          {required final AsyncValue<int> stepsCount,
-          required final AsyncValue<List<HealthDataPoint>> heartRates,
-          required final AsyncValue<List<HealthDataPoint>> sleepQualities,
-          required final AsyncValue<bool> isHealthConnectAvailable}) =
-      _$FitconnectStateImpl;
+      {required final AsyncValue<int> stepsCount,
+      required final AsyncValue<List<HealthDataPoint>> heartRates,
+      required final AsyncValue<List<HealthDataPoint>> sleepQualities,
+      required final AsyncValue<bool> isHealthConnectAvailable,
+      required final AsyncValue<String> analytics}) = _$FitconnectStateImpl;
 
   @override
   AsyncValue<int> get stepsCount;
@@ -1143,6 +1353,8 @@ abstract class _FitconnectState implements FitconnectState {
   AsyncValue<List<HealthDataPoint>> get sleepQualities;
   @override
   AsyncValue<bool> get isHealthConnectAvailable;
+  @override
+  AsyncValue<String> get analytics;
 
   /// Create a copy of FitconnectState
   /// with the given fields replaced by the non-null parameter values.

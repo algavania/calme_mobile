@@ -34,6 +34,17 @@ class MeditationBloc extends Bloc<MeditationEvent, MeditationState> {
     emit(
       state.copyWith(meditations: const AsyncValue.loading()),
     );
+
+    final currentMeditations = state.meditations
+        .maybeMap(orElse: () => <MeditationModel>[], data: (s) => s.data);
+    if (currentMeditations.isNotEmpty) {
+      for (final meditation in currentMeditations) {
+        for (final session in meditation.sessions) {
+          await session.player?.dispose();
+        }
+      }
+    }
+
     final res = await _getMeditations.call(const None());
     await res.fold((failure) {
       emit(

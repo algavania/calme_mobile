@@ -10,4 +10,9 @@ abstract class FitConnectRepository {
   Future<Either<Failure, List<HealthDataPoint>>> getHeartRates();
 
   Future<Either<Failure, List<HealthDataPoint>>> getSleepQualities();
+
+  Future<Either<Failure, String>> getAnalytics(
+    int steps,
+    List<HealthDataPoint> heartRates,
+  );
 }
