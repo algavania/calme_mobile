@@ -13,7 +13,7 @@ Fitur utama dari Calme adalah sebagai berikut:
 
 ## Cara Install Aplikasi
 
-Terdapat 2 cara untuk bisa menikmati fitur-fitur dari Eco.in langsung dari Handphone Anda, yaitu:
+Terdapat 2 cara untuk bisa menikmati fitur-fitur dari Calme langsung dari Handphone Anda, yaitu:
 
 1. Install aplikasi melalui link [Google Drive](https://drive.google.com/file/d/1YwUMtI2toe4O83ZIQflgm36qoaVVDhod/view?usp=sharing)
 2. Atau, jalankan perintah-perintah berikut secara berurutan melalui terminal Anda:
@@ -22,7 +22,7 @@ Terdapat 2 cara untuk bisa menikmati fitur-fitur dari Eco.in langsung dari Handp
    - `flutter pub get`
    - `flutter build apk --split-per-abi`
    - Masuk ke direktori `/build/app/outputs/flutter-apk/`
-   - Install file `app-arm86-v8a-release.apk` pada Handphone Anda
+   - Install file `app-arm64-v8a-production-release.apk` pada HP Android Anda
 
 ## Pengembang
 
