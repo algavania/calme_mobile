@@ -1,8 +1,11 @@
 import 'package:calme_mobile/data/models/article/article_model.dart';
 import 'package:calme_mobile/database/db_helper.dart';
-import 'package:calme_mobile/features/article/data/article_repository.dart';
 
-class ArticleRepositoryImpl extends ArticleRepository {
+abstract class ArticleRemoteDataSource {
+  Future<List<ArticleModel>> getArticles();
+}
+
+class ArticleRemoteDataSourceImpl extends ArticleRemoteDataSource {
   final db = DbHelper.db;
 
   @override

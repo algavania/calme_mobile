@@ -19,7 +19,7 @@ class _DashboardPageState extends State<DashboardPage> {
       routes: [
         const HomeRoute(),
         const MeditationRoute(),
-        const ArticleRoute(),
+        ArticleRoute(),
         const JournalRoute(),
         ProfileRoute(),
       ],

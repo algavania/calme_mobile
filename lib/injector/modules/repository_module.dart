@@ -1,6 +1,7 @@
 
-import 'package:calme_mobile/features/article/data/article_repository.dart';
-import 'package:calme_mobile/features/article/data/article_repository_impl.dart';
+import 'package:calme_mobile/features/article/data/datasources/article_remote_datasource.dart';
+import 'package:calme_mobile/features/article/data/repositories/article_repository_impl.dart';
+import 'package:calme_mobile/features/article/domain/repositories/article_repository.dart';
 import 'package:calme_mobile/features/authentication/data/datasources/auth_remote_datasource.dart';
 import 'package:calme_mobile/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:calme_mobile/features/authentication/domain/repositories/auth_repository.dart';
@@ -32,7 +33,9 @@ class RepositoryModule {
         CopingRepositoryImpl.new,
       )
       ..registerFactory<ArticleRepository>(
-        ArticleRepositoryImpl.new,
+            () => ArticleRepositoryImpl(
+          Injector.instance<ArticleRemoteDataSource>(),
+        ),
       );
   }
 }

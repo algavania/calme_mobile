@@ -11,10 +11,13 @@ part of 'router.dart';
 
 /// generated route for
 /// [ArticlePage]
-class ArticleRoute extends PageRouteInfo<void> {
-  const ArticleRoute({List<PageRouteInfo>? children})
-      : super(
+class ArticleRoute extends PageRouteInfo<ArticleRouteArgs> {
+  ArticleRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           ArticleRoute.name,
+          args: ArticleRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -23,9 +26,22 @@ class ArticleRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ArticlePage();
+      final args =
+          data.argsAs<ArticleRouteArgs>(orElse: () => const ArticleRouteArgs());
+      return ArticlePage(key: args.key);
     },
   );
+}
+
+class ArticleRouteArgs {
+  const ArticleRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ArticleRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

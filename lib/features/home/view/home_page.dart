@@ -3,9 +3,7 @@ import 'package:calme_mobile/core/color_values.dart';
 import 'package:calme_mobile/core/styles.dart';
 import 'package:calme_mobile/data/models/article/article_model.dart';
 import 'package:calme_mobile/data/models/meditation/meditation_model.dart';
-import 'package:calme_mobile/features/article/bloc/article_bloc.dart';
-import 'package:calme_mobile/features/article/data/article_repository.dart';
-import 'package:calme_mobile/features/article/view/detail_article_page.dart';
+import 'package:calme_mobile/features/article/view/bloc/article_bloc.dart';
 import 'package:calme_mobile/features/meditation/bloc/meditation_bloc.dart';
 import 'package:calme_mobile/features/meditation/data/repository/meditation_repository.dart';
 import 'package:calme_mobile/injector/injector.dart';
@@ -40,8 +38,7 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
   final _meditationBloc =
       MeditationBloc(repository: Injector.instance<MeditationRepository>());
-  final _articleBloc =
-      ArticleBloc(repository: Injector.instance<ArticleRepository>());
+  final _articleBloc = Injector.instance<ArticleBloc>();
   var _currentStepCount = 0;
   final _stepGoal = 10000;
   var _currentHeartRate = 0;
@@ -459,7 +456,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(width: 1.w),
               GestureDetector(
                 onTap: () {
-                  AutoRouter.of(context).navigate(const ArticleRoute());
+                  AutoRouter.of(context).navigate(ArticleRoute());
                 },
                 child: Text(
                   context.l10n.viewAll,
@@ -485,8 +482,8 @@ class _HomePageState extends State<HomePage> {
             builder: (context, state) {
               final dummyList =
                   List.generate(3, (index) => generateMockArticleModel());
-              return state.maybeMap(
-                loaded: (s) => _buildArticleList(s.list, false),
+              return state.articles.maybeMap(
+                data: (s) => _buildArticleList(s.data, false),
                 orElse: () => _buildArticleList(dummyList, true),
               );
             },

@@ -1,3 +1,4 @@
+import 'package:calme_mobile/features/article/view/bloc/article_bloc.dart';
 import 'package:calme_mobile/features/authentication/view/bloc/authentication_bloc.dart';
 import 'package:calme_mobile/injector/injector.dart';
 
@@ -7,6 +8,9 @@ class BlocModule {
   static void init() {
     Injector.instance.registerLazySingleton<AuthenticationBloc>(
       AuthenticationBloc.new,
+    );
+    Injector.instance.registerLazySingleton<ArticleBloc>(
+      ArticleBloc.new,
     );
   }
 }

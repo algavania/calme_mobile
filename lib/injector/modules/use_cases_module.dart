@@ -1,3 +1,5 @@
+import 'package:calme_mobile/features/article/domain/repositories/article_repository.dart';
+import 'package:calme_mobile/features/article/domain/usecases/get_articles.dart';
 import 'package:calme_mobile/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:calme_mobile/features/authentication/domain/usecases/get_user_by_id.dart';
 import 'package:calme_mobile/features/authentication/domain/usecases/login.dart';
@@ -22,13 +24,19 @@ class UseCasesModule {
         ),
       )
       ..registerLazySingleton<GetUserById>(
-            () => GetUserById(
+        () => GetUserById(
           Injector.instance<AuthRepository>(),
         ),
       )
       ..registerLazySingleton<Register>(
         () => Register(
           Injector.instance<AuthRepository>(),
+        ),
+      )
+    /// Article Use Cases
+      ..registerLazySingleton<GetArticles>(
+        () => GetArticles(
+          Injector.instance<ArticleRepository>(),
         ),
       );
   }
