@@ -2,8 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:calme_mobile/core/color_values.dart';
 import 'package:calme_mobile/core/styles.dart';
 import 'package:calme_mobile/database/db_helper.dart';
-import 'package:calme_mobile/features/authentication/bloc/authentication_bloc.dart';
-import 'package:calme_mobile/features/authentication/data/repository/auth_repository.dart';
+import 'package:calme_mobile/features/authentication/view/bloc/authentication_bloc.dart';
 import 'package:calme_mobile/injector/injector.dart';
 import 'package:calme_mobile/l10n/l10n.dart';
 import 'package:calme_mobile/routes/router.dart';
@@ -16,36 +15,32 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:unicons/unicons.dart';
 
 @RoutePage()
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatelessWidget {
+  ProfilePage({super.key});
 
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  final _bloc =
-      AuthenticationBloc(repository: Injector.instance<AuthRepository>());
+  final _bloc = Injector.instance<AuthenticationBloc>();
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       bloc: _bloc,
       listener: (context, state) {
-        state.maybeMap(
+        state.isAuthenticated.maybeMap(
           orElse: () {},
           loading: (_) {
             context.loaderOverlay.show();
           },
-          unauthenticated: (_) {
+          data: (s) {
             context.loaderOverlay.hide();
-            AutoRouter.of(context).replace(const LoginRoute());
+            if (!s.data) {
+              AutoRouter.of(context).replace(LoginRoute());
+            }
           },
         );
       },
       child: Scaffold(
         appBar: CustomAppBar(
-          title: AppLocalizations.of(context).profile,
+          title: context.l10n.profile,
         ),
         body: GestureDetector(
           onTap: () {
@@ -54,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _buildProfileBody(),
+                _buildProfileBody(context),
                 const SizedBox(height: Styles.defaultSpacing),
               ],
             ),
@@ -64,64 +59,67 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildProfileBody() {
+  Widget _buildProfileBody(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(Styles.defaultPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildUserInfo(),
+          _buildUserInfo(context),
           // const SizedBox(height: Styles.defaultSpacing),
           // _buildMyActivity(),
           const SizedBox(height: Styles.defaultSpacing),
-          _buildHelpCenter(),
+          _buildHelpCenter(context),
         ],
       ),
     );
   }
 
-  Widget _buildMyActivity() {
+  Widget _buildMyActivity(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: Styles.biggerSpacing),
         Text(
-          AppLocalizations.of(context).myActivity,
+          context.l10n.myActivity,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: Styles.biggerSpacing),
         _buildButton(
           icon: UniconsLine.history,
-          text: AppLocalizations.of(context).journalHistory,
+          text: context.l10n.journalHistory,
+          context: context,
         ),
         const SizedBox(height: Styles.defaultSpacing),
         _buildButton(
           icon: UniconsLine.bookmark,
-          text: AppLocalizations.of(context).savedArticle,
+          text: context.l10n.savedArticle,
+          context: context,
         ),
         const SizedBox(height: Styles.defaultSpacing),
         _buildButton(
           icon: UniconsLine.key_skeleton_alt,
-          text: AppLocalizations.of(context).changePassword,
+          text: context.l10n.changePassword,
+          context: context,
         ),
       ],
     );
   }
 
-  Widget _buildHelpCenter() {
+  Widget _buildHelpCenter(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: Styles.biggerSpacing),
         Text(
-          AppLocalizations.of(context).helpCenter,
+          context.l10n.helpCenter,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: Styles.biggerSpacing),
         GestureDetector(
           onTap: () {
-            showDialog(
+            showDialog<void>(
               context: context,
               builder: (_) => CustomAlertDialog(
                 title: 'Konfirmasi',
@@ -134,7 +132,8 @@ class _ProfilePageState extends State<ProfilePage> {
           },
           child: _buildButton(
             icon: UniconsLine.sign_out_alt,
-            text: AppLocalizations.of(context).logout,
+            text: context.l10n.logout,
+            context: context,
             borderColor: ColorValues.danger50,
           ),
         ),
@@ -145,6 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildButton({
     required IconData icon,
     required String text,
+    required BuildContext context,
     Color? borderColor,
   }) {
     return Container(
@@ -178,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildUserInfo() {
+  Widget _buildUserInfo(BuildContext context) {
     return Row(
       children: [
         RoundedButton(

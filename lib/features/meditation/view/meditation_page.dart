@@ -49,7 +49,7 @@ class _MeditationPageState extends State<MeditationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: AppLocalizations.of(context).meditation,
+        title: context.l10n.meditation,
       ),
       body: GestureDetector(
         onTap: () {
@@ -86,7 +86,7 @@ class _MeditationPageState extends State<MeditationPage> {
             children: [
               Expanded(
                 child: Text(
-                  AppLocalizations.of(context).meditationTopic,
+                  context.l10n.meditationTopic,
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
@@ -94,7 +94,7 @@ class _MeditationPageState extends State<MeditationPage> {
           ),
           const SizedBox(height: Styles.mediumSpacing),
           Text(
-            AppLocalizations.of(context).viewPlaylistText,
+            context.l10n.viewPlaylistText,
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
@@ -144,7 +144,7 @@ class _MeditationPageState extends State<MeditationPage> {
       padding: const EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
       child: CustomTextField(
         controller: _searchController,
-        hint: AppLocalizations.of(context).findMeditationTopic,
+        hint: context.l10n.findMeditationTopic,
         icon: UniconsLine.search,
         isDense: true,
       ),
@@ -164,7 +164,7 @@ class _MeditationPageState extends State<MeditationPage> {
           ),
           Expanded(
             child: Text(
-              AppLocalizations.of(context).meditation,
+              context.l10n.meditation,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelLarge,
             ),

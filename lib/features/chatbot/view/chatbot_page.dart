@@ -209,12 +209,12 @@ class _ChatbotPageState extends State<ChatbotPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppLocalizations.of(context).calmebot,
+                      context.l10n.calmebot,
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                     SizedBox(height: 0.5.h),
                     Text(
-                      AppLocalizations.of(context).online,
+                      context.l10n.online,
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall
@@ -273,7 +273,7 @@ class _MessageChatBoxWidgetState extends State<MessageChatBoxWidget> {
                   _isSend = s?.trim().isNotEmpty ?? false;
                 });
               },
-              hint: AppLocalizations.of(context).typeSomething,
+              hint: context.l10n.typeSomething,
             ),
           ),
           const SizedBox(width: Styles.defaultSpacing),

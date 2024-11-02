@@ -16,11 +16,11 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
-      routes: const [
-        HomeRoute(),
-        MeditationRoute(),
-        ArticleRoute(),
-        JournalRoute(),
+      routes: [
+        const HomeRoute(),
+        const MeditationRoute(),
+        const ArticleRoute(),
+        const JournalRoute(),
         ProfileRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
@@ -30,23 +30,23 @@ class _DashboardPageState extends State<DashboardPage> {
           destinations: [
             NavigationDestination(
               icon: const Icon(UniconsLine.estate),
-              label: AppLocalizations.of(context).home,
+              label: context.l10n.home,
             ),
             NavigationDestination(
               icon: const Icon(UniconsLine.headphones_alt),
-              label: AppLocalizations.of(context).meditation,
+              label: context.l10n.meditation,
             ),
             NavigationDestination(
               icon: const Icon(UniconsLine.newspaper),
-              label: AppLocalizations.of(context).article,
+              label: context.l10n.article,
             ),
             NavigationDestination(
               icon: const Icon(UniconsLine.file_alt),
-              label: AppLocalizations.of(context).journal,
+              label: context.l10n.journal,
             ),
             NavigationDestination(
               icon: const Icon(UniconsLine.user),
-              label: AppLocalizations.of(context).profile,
+              label: context.l10n.profile,
             ),
           ],
         );

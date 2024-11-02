@@ -89,14 +89,14 @@ class DashboardRoute extends PageRouteInfo<void> {
 /// [DetailArticlePage]
 class DetailArticleRoute extends PageRouteInfo<DetailArticleRouteArgs> {
   DetailArticleRoute({
-    Key? key,
     required ArticleModel article,
+    Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           DetailArticleRoute.name,
           args: DetailArticleRouteArgs(
-            key: key,
             article: article,
+            key: key,
           ),
           initialChildren: children,
         );
@@ -108,8 +108,8 @@ class DetailArticleRoute extends PageRouteInfo<DetailArticleRouteArgs> {
     builder: (data) {
       final args = data.argsAs<DetailArticleRouteArgs>();
       return DetailArticlePage(
-        key: args.key,
         article: args.article,
+        key: args.key,
       );
     },
   );
@@ -117,17 +117,17 @@ class DetailArticleRoute extends PageRouteInfo<DetailArticleRouteArgs> {
 
 class DetailArticleRouteArgs {
   const DetailArticleRouteArgs({
-    this.key,
     required this.article,
+    this.key,
   });
-
-  final Key? key;
 
   final ArticleModel article;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'DetailArticleRouteArgs{key: $key, article: $article}';
+    return 'DetailArticleRouteArgs{article: $article, key: $key}';
   }
 }
 
@@ -154,18 +154,18 @@ class HomeRoute extends PageRouteInfo<void> {
 /// [JournalDetailPage]
 class JournalDetailRoute extends PageRouteInfo<JournalDetailRouteArgs> {
   JournalDetailRoute({
-    Key? key,
     required JournalModel journalModel,
     required List<QuestionModel> questions,
     required List<JournalAnswerModel> answers,
+    Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           JournalDetailRoute.name,
           args: JournalDetailRouteArgs(
-            key: key,
             journalModel: journalModel,
             questions: questions,
             answers: answers,
+            key: key,
           ),
           initialChildren: children,
         );
@@ -177,10 +177,10 @@ class JournalDetailRoute extends PageRouteInfo<JournalDetailRouteArgs> {
     builder: (data) {
       final args = data.argsAs<JournalDetailRouteArgs>();
       return JournalDetailPage(
-        key: args.key,
         journalModel: args.journalModel,
         questions: args.questions,
         answers: args.answers,
+        key: args.key,
       );
     },
   );
@@ -188,13 +188,11 @@ class JournalDetailRoute extends PageRouteInfo<JournalDetailRouteArgs> {
 
 class JournalDetailRouteArgs {
   const JournalDetailRouteArgs({
-    this.key,
     required this.journalModel,
     required this.questions,
     required this.answers,
+    this.key,
   });
-
-  final Key? key;
 
   final JournalModel journalModel;
 
@@ -202,9 +200,11 @@ class JournalDetailRouteArgs {
 
   final List<JournalAnswerModel> answers;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'JournalDetailRouteArgs{key: $key, journalModel: $journalModel, questions: $questions, answers: $answers}';
+    return 'JournalDetailRouteArgs{journalModel: $journalModel, questions: $questions, answers: $answers, key: $key}';
   }
 }
 
@@ -231,14 +231,14 @@ class JournalRoute extends PageRouteInfo<void> {
 /// [JournalStartPage]
 class JournalStartRoute extends PageRouteInfo<JournalStartRouteArgs> {
   JournalStartRoute({
-    Key? key,
     required JournalModel journalModel,
+    Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           JournalStartRoute.name,
           args: JournalStartRouteArgs(
-            key: key,
             journalModel: journalModel,
+            key: key,
           ),
           initialChildren: children,
         );
@@ -250,8 +250,8 @@ class JournalStartRoute extends PageRouteInfo<JournalStartRouteArgs> {
     builder: (data) {
       final args = data.argsAs<JournalStartRouteArgs>();
       return JournalStartPage(
-        key: args.key,
         journalModel: args.journalModel,
+        key: args.key,
       );
     },
   );
@@ -259,17 +259,17 @@ class JournalStartRoute extends PageRouteInfo<JournalStartRouteArgs> {
 
 class JournalStartRouteArgs {
   const JournalStartRouteArgs({
-    this.key,
     required this.journalModel,
+    this.key,
   });
-
-  final Key? key;
 
   final JournalModel journalModel;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'JournalStartRouteArgs{key: $key, journalModel: $journalModel}';
+    return 'JournalStartRouteArgs{journalModel: $journalModel, key: $key}';
   }
 }
 
@@ -294,10 +294,13 @@ class LandingRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [LoginPage]
-class LoginRoute extends PageRouteInfo<void> {
-  const LoginRoute({List<PageRouteInfo>? children})
-      : super(
+class LoginRoute extends PageRouteInfo<LoginRouteArgs> {
+  LoginRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           LoginRoute.name,
+          args: LoginRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -306,23 +309,36 @@ class LoginRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LoginPage();
+      final args =
+          data.argsAs<LoginRouteArgs>(orElse: () => const LoginRouteArgs());
+      return LoginPage(key: args.key);
     },
   );
+}
+
+class LoginRouteArgs {
+  const LoginRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LoginRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
 /// [MeditationDetailPage]
 class MeditationDetailRoute extends PageRouteInfo<MeditationDetailRouteArgs> {
   MeditationDetailRoute({
-    Key? key,
     required MeditationModel meditationModel,
+    Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           MeditationDetailRoute.name,
           args: MeditationDetailRouteArgs(
-            key: key,
             meditationModel: meditationModel,
+            key: key,
           ),
           initialChildren: children,
         );
@@ -334,8 +350,8 @@ class MeditationDetailRoute extends PageRouteInfo<MeditationDetailRouteArgs> {
     builder: (data) {
       final args = data.argsAs<MeditationDetailRouteArgs>();
       return MeditationDetailPage(
-        key: args.key,
         meditationModel: args.meditationModel,
+        key: args.key,
       );
     },
   );
@@ -343,17 +359,17 @@ class MeditationDetailRoute extends PageRouteInfo<MeditationDetailRouteArgs> {
 
 class MeditationDetailRouteArgs {
   const MeditationDetailRouteArgs({
-    this.key,
     required this.meditationModel,
+    this.key,
   });
-
-  final Key? key;
 
   final MeditationModel meditationModel;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'MeditationDetailRouteArgs{key: $key, meditationModel: $meditationModel}';
+    return 'MeditationDetailRouteArgs{meditationModel: $meditationModel, key: $key}';
   }
 }
 
@@ -378,10 +394,13 @@ class MeditationRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ProfilePage]
-class ProfileRoute extends PageRouteInfo<void> {
-  const ProfileRoute({List<PageRouteInfo>? children})
-      : super(
+class ProfileRoute extends PageRouteInfo<ProfileRouteArgs> {
+  ProfileRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           ProfileRoute.name,
+          args: ProfileRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -390,17 +409,33 @@ class ProfileRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const ProfilePage();
+      final args =
+          data.argsAs<ProfileRouteArgs>(orElse: () => const ProfileRouteArgs());
+      return ProfilePage(key: args.key);
     },
   );
 }
 
+class ProfileRouteArgs {
+  const ProfileRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'ProfileRouteArgs{key: $key}';
+  }
+}
+
 /// generated route for
 /// [RegisterPage]
-class RegisterRoute extends PageRouteInfo<void> {
-  const RegisterRoute({List<PageRouteInfo>? children})
-      : super(
+class RegisterRoute extends PageRouteInfo<RegisterRouteArgs> {
+  RegisterRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           RegisterRoute.name,
+          args: RegisterRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -409,23 +444,36 @@ class RegisterRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const RegisterPage();
+      final args = data.argsAs<RegisterRouteArgs>(
+          orElse: () => const RegisterRouteArgs());
+      return RegisterPage(key: args.key);
     },
   );
+}
+
+class RegisterRouteArgs {
+  const RegisterRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'RegisterRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
 /// [SessionPage]
 class SessionRoute extends PageRouteInfo<SessionRouteArgs> {
   SessionRoute({
-    Key? key,
     required MeditationModel meditationModel,
+    Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           SessionRoute.name,
           args: SessionRouteArgs(
-            key: key,
             meditationModel: meditationModel,
+            key: key,
           ),
           initialChildren: children,
         );
@@ -437,8 +485,8 @@ class SessionRoute extends PageRouteInfo<SessionRouteArgs> {
     builder: (data) {
       final args = data.argsAs<SessionRouteArgs>();
       return SessionPage(
-        key: args.key,
         meditationModel: args.meditationModel,
+        key: args.key,
       );
     },
   );
@@ -446,17 +494,17 @@ class SessionRoute extends PageRouteInfo<SessionRouteArgs> {
 
 class SessionRouteArgs {
   const SessionRouteArgs({
-    this.key,
     required this.meditationModel,
+    this.key,
   });
-
-  final Key? key;
 
   final MeditationModel meditationModel;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'SessionRouteArgs{key: $key, meditationModel: $meditationModel}';
+    return 'SessionRouteArgs{meditationModel: $meditationModel, key: $key}';
   }
 }
 

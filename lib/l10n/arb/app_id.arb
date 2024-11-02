@@ -68,5 +68,7 @@
     "journalTitle2": "Optimalkan Kesehatan Pikiran",
     "journalSubtitle2": "Kunci kebahagiaan yang sejati",
     "copingSkillsToolbox": "Coping Skills Toolbox",
-    "slide": "Slide"
+    "slide": "Slide",
+    "emptyValidatorMessage": "Tidak boleh kosong",
+    "invalidEmail": "Email tidak valid"
 }

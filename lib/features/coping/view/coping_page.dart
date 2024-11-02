@@ -36,7 +36,7 @@ class _CopingPageState extends State<CopingPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context).copingSkillsToolbox,
+          context.l10n.copingSkillsToolbox,
           style: const TextStyle(color: ColorValues.white),
         ),
         backgroundColor: ColorValues.primary50,
@@ -86,7 +86,7 @@ class _CopingPageState extends State<CopingPage> {
               valueListenable: _slideCount,
               builder: (context, _, __) {
                 return Text(
-                  '${AppLocalizations.of(context).slide} ${_slideCount.value}/${list.length}',
+                  '${context.l10n.slide} ${_slideCount.value}/${list.length}',
                   style: Theme.of(context)
                       .textTheme
                       .displaySmall

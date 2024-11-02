@@ -59,7 +59,7 @@ class _JournalPageState extends State<JournalPage> {
           child: Column(
             children: [
               CustomAppBar(
-                title: AppLocalizations.of(context).journal,
+                title: context.l10n.journal,
               ),
               const SizedBox(height: Styles.defaultSpacing),
               Expanded(
@@ -99,7 +99,7 @@ class _JournalPageState extends State<JournalPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context).journalTitle1,
+                  context.l10n.journalTitle1,
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium
@@ -158,7 +158,7 @@ class _JournalPageState extends State<JournalPage> {
             children: [
               Expanded(
                 child: Text(
-                  AppLocalizations.of(context).journalTopic,
+                  context.l10n.journalTopic,
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
@@ -166,7 +166,7 @@ class _JournalPageState extends State<JournalPage> {
           ),
           const SizedBox(height: Styles.mediumSpacing),
           Text(
-            AppLocalizations.of(context).journalText1,
+            context.l10n.journalText1,
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
@@ -259,7 +259,7 @@ class _JournalPageState extends State<JournalPage> {
       padding: const EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
       child: CustomTextField(
         controller: _searchController,
-        hint: AppLocalizations.of(context).findInterestingJournal,
+        hint: context.l10n.findInterestingJournal,
         icon: UniconsLine.search,
         isDense: true,
       ),

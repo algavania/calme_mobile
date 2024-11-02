@@ -46,7 +46,7 @@ class _MeditationDetailPageState extends State<MeditationDetailPage> {
           ),
         ),
         title: Text(
-          AppLocalizations.of(context).meditation,
+          context.l10n.meditation,
           style: Theme.of(context)
               .textTheme
               .titleMedium

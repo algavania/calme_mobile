@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: AppLocalizations.of(context).home,
+        title: context.l10n.home,
       ),
       body: GestureDetector(
         onTap: () {
@@ -403,7 +403,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    AppLocalizations.of(context).copingToolbox,
+                    context.l10n.copingToolbox,
                     style: Theme.of(context)
                         .textTheme
                         .displaySmall
@@ -413,7 +413,7 @@ class _HomePageState extends State<HomePage> {
                     height: Styles.defaultSpacing,
                   ),
                   Text(
-                    AppLocalizations.of(context).copingText,
+                    context.l10n.copingText,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -452,7 +452,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Expanded(
                 child: Text(
-                  AppLocalizations.of(context).articleSectionText1,
+                  context.l10n.articleSectionText1,
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
@@ -462,7 +462,7 @@ class _HomePageState extends State<HomePage> {
                   AutoRouter.of(context).navigate(const ArticleRoute());
                 },
                 child: Text(
-                  AppLocalizations.of(context).viewAll,
+                  context.l10n.viewAll,
                   style: Theme.of(context)
                       .textTheme
                       .displaySmall
@@ -473,7 +473,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: Styles.mediumSpacing),
           Text(
-            AppLocalizations.of(context).articleSectionText2,
+            context.l10n.articleSectionText2,
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
@@ -539,7 +539,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context).breathingExercise,
+                  context.l10n.breathingExercise,
                   style: Theme.of(context)
                       .textTheme
                       .labelLarge
@@ -547,7 +547,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: Styles.defaultSpacing),
                 Text(
-                  AppLocalizations.of(context).breathingExerciseText,
+                  context.l10n.breathingExerciseText,
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
@@ -561,7 +561,7 @@ class _HomePageState extends State<HomePage> {
           Flexible(
             flex: 3,
             child: CustomButton(
-              buttonText: AppLocalizations.of(context).start,
+              buttonText: context.l10n.start,
               prefixIcon: UniconsLine.play,
               onPressed: () {},
             ),
@@ -583,7 +583,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Expanded(
                 child: Text(
-                  AppLocalizations.of(context).otherMeditation,
+                  context.l10n.otherMeditation,
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
@@ -593,7 +593,7 @@ class _HomePageState extends State<HomePage> {
                   AutoRouter.of(context).navigate(const MeditationRoute());
                 },
                 child: Text(
-                  AppLocalizations.of(context).viewAll,
+                  context.l10n.viewAll,
                   style: Theme.of(context)
                       .textTheme
                       .displaySmall
@@ -604,7 +604,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: Styles.mediumSpacing),
           Text(
-            AppLocalizations.of(context).viewPlaylistText,
+            context.l10n.viewPlaylistText,
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
@@ -667,7 +667,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppLocalizations.of(context).howIsYourDay,
+              context.l10n.howIsYourDay,
               style: Theme.of(context).textTheme.labelLarge,
             ),
             const SizedBox(height: 8),
@@ -680,7 +680,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        AppLocalizations.of(context).introductionDayText1,
+                        context.l10n.introductionDayText1,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
@@ -695,7 +695,7 @@ class _HomePageState extends State<HomePage> {
                   child: CustomButton(
                     fontSize: 16,
                     buttonText:
-                        AppLocalizations.of(context).introductionDayButtonText,
+                        context.l10n.introductionDayButtonText,
                     onPressed: () {
                       AutoRouter.of(context).navigate(const ChatbotRoute());
                     },
@@ -718,7 +718,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: CustomTextField(
               controller: _searchController,
-              hint: AppLocalizations.of(context).findSomething,
+              hint: context.l10n.findSomething,
               icon: UniconsLine.search,
               isDense: true,
             ),

@@ -107,7 +107,7 @@ class _JournalStartPageState extends State<JournalStartPage> {
                   ),
                   Expanded(
                     child: CustomButton(
-                      buttonText: AppLocalizations.of(context).next,
+                      buttonText: context.l10n.next,
                       onPressed: () {
                         _bloc.add(
                           JournalEvent.getJournalQuestions(

@@ -35,7 +35,7 @@ class _ArticlePageState extends State<ArticlePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: AppLocalizations.of(context).article,
+        title: context.l10n.article,
       ),
       body: GestureDetector(
         onTap: () {
@@ -67,7 +67,7 @@ class _ArticlePageState extends State<ArticlePage> {
             children: [
               Expanded(
                 child: Text(
-                  AppLocalizations.of(context).articleSectionText1,
+                  context.l10n.articleSectionText1,
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
@@ -75,7 +75,7 @@ class _ArticlePageState extends State<ArticlePage> {
           ),
           const SizedBox(height: Styles.mediumSpacing),
           Text(
-            AppLocalizations.of(context).articleSectionText2,
+            context.l10n.articleSectionText2,
             style: Theme.of(context)
                 .textTheme
                 .bodySmall
@@ -117,7 +117,7 @@ class _ArticlePageState extends State<ArticlePage> {
       padding: const EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
       child: CustomTextField(
         controller: _searchController,
-        hint: AppLocalizations.of(context).findInterestingArticle,
+        hint: context.l10n.findInterestingArticle,
         icon: UniconsLine.search,
         isDense: true,
       ),

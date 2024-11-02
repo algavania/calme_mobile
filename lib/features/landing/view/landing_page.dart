@@ -38,18 +38,18 @@ class _LandingPageState extends State<LandingPage> {
     if (_pages.isNotEmpty) return;
     _pages.addAll([
       SliderPage(
-        title: AppLocalizations.of(context).landingTitle1,
-        description: AppLocalizations.of(context).landingDescription1,
+        title: context.l10n.landingTitle1,
+        description: context.l10n.landingDescription1,
         image: 'assets/landing/landing1.png',
       ),
       SliderPage(
-        title: AppLocalizations.of(context).landingTitle2,
-        description: AppLocalizations.of(context).landingDescription2,
+        title: context.l10n.landingTitle2,
+        description: context.l10n.landingDescription2,
         image: 'assets/landing/landing2.png',
       ),
       SliderPage(
-        title: AppLocalizations.of(context).landingTitle3,
-        description: AppLocalizations.of(context).landingDescription3,
+        title: context.l10n.landingTitle3,
+        description: context.l10n.landingDescription3,
         image: 'assets/landing/landing3.png',
       ),
     ]);
@@ -108,18 +108,18 @@ class _LandingPageState extends State<LandingPage> {
                             Expanded(
                               child: CustomButton(
                                 buttonText: _isLast()
-                                    ? AppLocalizations.of(context).register
-                                    : AppLocalizations.of(context).skip,
+                                    ? context.l10n.register
+                                    : context.l10n.skip,
                                 onPressed: () {
                                   SharedPreferencesService.setIsFirstTime(
                                     value: false,
                                   );
                                   if (_isLast()) {
                                     AutoRouter.of(context)
-                                        .replace(const RegisterRoute());
+                                        .replace(RegisterRoute());
                                   } else {
                                     AutoRouter.of(context)
-                                        .replace(const LoginRoute());
+                                        .replace(LoginRoute());
                                   }
                                 },
                                 isWhiteButton: true,
@@ -129,15 +129,15 @@ class _LandingPageState extends State<LandingPage> {
                             Expanded(
                               child: CustomButton(
                                 buttonText: _isLast()
-                                    ? AppLocalizations.of(context).login
-                                    : AppLocalizations.of(context).next,
+                                    ? context.l10n.login
+                                    : context.l10n.next,
                                 onPressed: () {
                                   if (_isLast()) {
                                     SharedPreferencesService.setIsFirstTime(
                                       value: false,
                                     );
                                     AutoRouter.of(context)
-                                        .replace(const LoginRoute());
+                                        .replace(LoginRoute());
                                   } else {
                                     _controller.nextPage(
                                       duration:

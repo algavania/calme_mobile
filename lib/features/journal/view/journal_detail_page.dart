@@ -205,7 +205,7 @@ class _JournalDetailPageState extends State<JournalDetailPage> {
             child: CustomButton(
               buttonText: _index == widget.questions.length - 1
                   ? 'Simpan'
-                  : AppLocalizations.of(context).next,
+                  : context.l10n.next,
               onPressed: () {
                 if (_index < widget.questions.length - 1) {
                   setState(() {

@@ -1,17 +1,44 @@
 import 'package:calme_mobile/data/models/user/user_model.dart';
 import 'package:calme_mobile/database/db_helper.dart';
-import 'package:calme_mobile/features/authentication/data/repository/auth_repository.dart';
+import 'package:calme_mobile/error/exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthRepositoryImpl extends AuthRepository {
+abstract class AuthRemoteDataSource {
+  Future<UserModel> login(String email, String password);
+
+  Future<UserModel> getUserById(String uid);
+
+  Future<void> register(String name, String email, String password);
+
+  Future<void> forgotPassword(String email);
+
+  Future<void> changePassword(String oldPassword, String newPassword);
+
+  Future<void> logout();
+}
+
+class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   final auth = DbHelper.auth;
 
   @override
-  Future<void> login(String email, String password) async {
+  Future<UserModel> getUserById(String uid) async {
+    final snapshot =
+        await DbHelper.db.collection(DbHelper.users).doc(uid).get();
+    final data = UserModel.fromJson(snapshot.data()!).copyWith(id: snapshot.id);
+    return data;
+  }
+
+  @override
+  Future<UserModel> login(String email, String password) async {
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
+      final res = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = res.user!;
+      return await getUserById(user.uid);
     } on FirebaseAuthException catch (e) {
-      throw _handleAuthErrorCodes(e.code);
+      throw Failure(_handleAuthErrorCodes(e.code));
     }
   }
 
@@ -19,14 +46,19 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> register(String name, String email, String password) async {
     try {
       final res = await auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
       await res.user?.updateDisplayName(name);
       final model =
           UserModel(name: name, email: email, createdAt: DateTime.now());
-      await DbHelper.db.collection(DbHelper.users).add(model.toJson());
+      await DbHelper.db
+          .collection(DbHelper.users)
+          .doc(res.user?.uid)
+          .set(model.toJson());
       await logout();
     } on FirebaseAuthException catch (e) {
-      throw _handleAuthErrorCodes(e.code);
+      throw Failure(_handleAuthErrorCodes(e.code));
     }
   }
 

@@ -109,7 +109,7 @@ class _DetailArticlePageState extends State<DetailArticlePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppLocalizations.of(context).writer,
+                context.l10n.writer,
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall
@@ -141,7 +141,7 @@ class _DetailArticlePageState extends State<DetailArticlePage> {
           const CustomBackButton(),
           Expanded(
             child: Text(
-              AppLocalizations.of(context).readArticle,
+              context.l10n.readArticle,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelLarge,
             ),
