@@ -12,6 +12,9 @@ import 'package:calme_mobile/features/journal/domain/usecases/get_journal_answer
 import 'package:calme_mobile/features/journal/domain/usecases/get_journal_questions.dart';
 import 'package:calme_mobile/features/journal/domain/usecases/get_journals.dart';
 import 'package:calme_mobile/features/journal/domain/usecases/save_journal_answers.dart';
+import 'package:calme_mobile/features/meditation/domain/repositories/meditation_repository.dart';
+import 'package:calme_mobile/features/meditation/domain/usecases/get_meditation_sessions.dart';
+import 'package:calme_mobile/features/meditation/domain/usecases/get_meditations.dart';
 import 'package:calme_mobile/injector/injector.dart';
 
 class UseCasesModule {
@@ -74,6 +77,18 @@ class UseCasesModule {
       ..registerLazySingleton<SaveJournalAnswers>(
         () => SaveJournalAnswers(
           Injector.instance<JournalRepository>(),
+        ),
+      )
+
+      /// Meditation Use Cases
+      ..registerLazySingleton<GetMeditations>(
+        () => GetMeditations(
+          Injector.instance<MeditationRepository>(),
+        ),
+      )
+      ..registerLazySingleton<GetMeditationSessions>(
+        () => GetMeditationSessions(
+          Injector.instance<MeditationRepository>(),
         ),
       );
   }

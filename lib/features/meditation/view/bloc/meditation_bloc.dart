@@ -41,9 +41,9 @@ class MeditationBloc extends Bloc<MeditationEvent, MeditationState> {
         ),
       );
     }, (data) async {
-      final meditations = <MeditationModel>[];
+      final meditations = data;
       var i = 0;
-      for (final e in data) {
+      for (final e in meditations) {
         final result = await _getMeditationSessions.call(e.id!);
         result.fold((_) {}, (s) {
           meditations[i] = e.copyWith(sessions: s);

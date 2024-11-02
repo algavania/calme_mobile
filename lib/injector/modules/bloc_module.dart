@@ -2,6 +2,7 @@ import 'package:calme_mobile/features/article/view/bloc/article_bloc.dart';
 import 'package:calme_mobile/features/authentication/view/bloc/authentication_bloc.dart';
 import 'package:calme_mobile/features/coping/view/bloc/coping_bloc.dart';
 import 'package:calme_mobile/features/journal/view/bloc/journal_bloc.dart';
+import 'package:calme_mobile/features/meditation/view/bloc/meditation_bloc.dart';
 import 'package:calme_mobile/injector/injector.dart';
 
 class BlocModule {
@@ -19,6 +20,9 @@ class BlocModule {
     );
     Injector.instance.registerLazySingleton<JournalBloc>(
       JournalBloc.new,
+    );
+    Injector.instance.registerLazySingleton<MeditationBloc>(
+      MeditationBloc.new,
     );
   }
 }

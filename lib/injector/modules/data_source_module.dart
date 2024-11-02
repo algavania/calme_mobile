@@ -2,6 +2,7 @@ import 'package:calme_mobile/features/article/data/datasources/article_remote_da
 import 'package:calme_mobile/features/authentication/data/datasources/auth_remote_datasource.dart';
 import 'package:calme_mobile/features/coping/data/datasources/coping_remote_datasource.dart';
 import 'package:calme_mobile/features/journal/data/datasources/journal_remote_datasource.dart';
+import 'package:calme_mobile/features/meditation/data/datasources/meditation_remote_datasource.dart';
 import 'package:calme_mobile/injector/injector.dart';
 
 class DataSourceModule {
@@ -19,6 +20,9 @@ class DataSourceModule {
     );
     Injector.instance.registerLazySingleton<JournalRemoteDataSource>(
       JournalRemoteDataSourceImpl.new,
+    );
+    Injector.instance.registerLazySingleton<MeditationRemoteDataSource>(
+      MeditationRemoteDataSourceImpl.new,
     );
   }
 }
