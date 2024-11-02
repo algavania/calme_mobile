@@ -65,10 +65,13 @@ class ChatbotRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [CopingPage]
-class CopingRoute extends PageRouteInfo<void> {
-  const CopingRoute({List<PageRouteInfo>? children})
-      : super(
+class CopingRoute extends PageRouteInfo<CopingRouteArgs> {
+  CopingRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           CopingRoute.name,
+          args: CopingRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -77,9 +80,22 @@ class CopingRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const CopingPage();
+      final args =
+          data.argsAs<CopingRouteArgs>(orElse: () => const CopingRouteArgs());
+      return CopingPage(key: args.key);
     },
   );
+}
+
+class CopingRouteArgs {
+  const CopingRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'CopingRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

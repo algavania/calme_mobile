@@ -382,7 +382,7 @@ class _HomePageState extends State<HomePage> {
     final color = Theme.of(context).primaryColor;
     return GestureDetector(
       onTap: () {
-        AutoRouter.of(context).push(const CopingRoute());
+        AutoRouter.of(context).push(CopingRoute());
       },
       child: Container(
         color: color,

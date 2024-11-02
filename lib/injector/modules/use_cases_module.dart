@@ -5,6 +5,8 @@ import 'package:calme_mobile/features/authentication/domain/usecases/get_user_by
 import 'package:calme_mobile/features/authentication/domain/usecases/login.dart';
 import 'package:calme_mobile/features/authentication/domain/usecases/logout.dart';
 import 'package:calme_mobile/features/authentication/domain/usecases/register.dart';
+import 'package:calme_mobile/features/coping/domain/repositories/coping_repository.dart';
+import 'package:calme_mobile/features/coping/domain/usecases/get_copings.dart';
 import 'package:calme_mobile/injector/injector.dart';
 
 class UseCasesModule {
@@ -37,6 +39,12 @@ class UseCasesModule {
       ..registerLazySingleton<GetArticles>(
         () => GetArticles(
           Injector.instance<ArticleRepository>(),
+        ),
+      )
+    /// Coping Use Cases
+      ..registerLazySingleton<GetCopings>(
+            () => GetCopings(
+          Injector.instance<CopingRepository>(),
         ),
       );
   }

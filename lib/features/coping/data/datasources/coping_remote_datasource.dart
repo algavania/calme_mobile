@@ -1,8 +1,12 @@
+
 import 'package:calme_mobile/data/models/coping/coping_model.dart';
 import 'package:calme_mobile/database/db_helper.dart';
-import 'package:calme_mobile/features/coping/data/coping_repository.dart';
 
-class CopingRepositoryImpl extends CopingRepository {
+abstract class CopingRemoteDataSource {
+  Future<List<CopingModel>> getCopings();
+}
+
+class CopingRemoteDataSourceImpl implements CopingRemoteDataSource {
   final db = DbHelper.db;
 
   @override
@@ -16,5 +20,4 @@ class CopingRepositoryImpl extends CopingRepository {
     }
     return list;
   }
-
 }

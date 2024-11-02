@@ -5,8 +5,9 @@ import 'package:calme_mobile/features/article/domain/repositories/article_reposi
 import 'package:calme_mobile/features/authentication/data/datasources/auth_remote_datasource.dart';
 import 'package:calme_mobile/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:calme_mobile/features/authentication/domain/repositories/auth_repository.dart';
-import 'package:calme_mobile/features/coping/data/coping_repository.dart';
-import 'package:calme_mobile/features/coping/data/coping_repository_impl.dart';
+import 'package:calme_mobile/features/coping/data/datasources/coping_remote_datasource.dart';
+import 'package:calme_mobile/features/coping/data/repositories/coping_repository_impl.dart';
+import 'package:calme_mobile/features/coping/domain/repositories/coping_repository.dart';
 import 'package:calme_mobile/features/journal/data/repository/journal_repository.dart';
 import 'package:calme_mobile/features/journal/data/repository/journal_repository_impl.dart';
 import 'package:calme_mobile/features/meditation/data/repository/meditation_repository.dart';
@@ -30,7 +31,9 @@ class RepositoryModule {
         MeditationRepositoryImpl.new,
       )
       ..registerFactory<CopingRepository>(
-        CopingRepositoryImpl.new,
+            () => CopingRepositoryImpl(
+          Injector.instance<CopingRemoteDataSource>(),
+        ),
       )
       ..registerFactory<ArticleRepository>(
             () => ArticleRepositoryImpl(

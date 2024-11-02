@@ -7,6 +7,6 @@ class ArticleState with _$ArticleState {
   }) = _ArticleState;
 
   factory ArticleState.initial() => const ArticleState(
-    articles: AsyncValue.initial(),
+    articles: AsyncValue.loading(),
   );
 }
