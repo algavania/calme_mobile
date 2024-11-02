@@ -3,9 +3,9 @@ import 'package:calme_mobile/core/color_values.dart';
 import 'package:calme_mobile/core/styles.dart';
 import 'package:calme_mobile/data/models/article/article_model.dart';
 import 'package:calme_mobile/data/models/meditation/meditation_model.dart';
+import 'package:calme_mobile/error/exceptions.dart';
 import 'package:calme_mobile/features/article/view/bloc/article_bloc.dart';
-import 'package:calme_mobile/features/meditation/bloc/meditation_bloc.dart';
-import 'package:calme_mobile/features/meditation/data/repository/meditation_repository.dart';
+import 'package:calme_mobile/features/meditation/view/bloc/meditation_bloc.dart';
 import 'package:calme_mobile/injector/injector.dart';
 import 'package:calme_mobile/l10n/l10n.dart';
 import 'package:calme_mobile/routes/router.dart';
@@ -24,7 +24,6 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sizer/sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:unicons/unicons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {
@@ -36,8 +35,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
-  final _meditationBloc =
-      MeditationBloc(repository: Injector.instance<MeditationRepository>());
+  final _meditationBloc = Injector.instance<MeditationBloc>();
   final _articleBloc = Injector.instance<ArticleBloc>();
   var _currentStepCount = 0;
   final _stepGoal = 10000;
@@ -86,7 +84,7 @@ class _HomePageState extends State<HomePage> {
     // requesting access to the data types before reading them
     final requested = await Health().requestAuthorization(types);
     if (!requested) {
-      throw 'Izinkan akses ke data kesehatan';
+      throw Failure('Izinkan akses ke data kesehatan');
     }
     // get steps for today (i.e., since midnight)
     final now = DateTime.now();
@@ -119,8 +117,7 @@ class _HomePageState extends State<HomePage> {
     if (heartRatePermission) {
       try {
         // Fetch heart rate data
-        final heartRateData =
-            await Health().getHealthDataFromTypes(
+        final heartRateData = await Health().getHealthDataFromTypes(
           startTime: midnight,
           endTime: now,
           types: [HealthDataType.HEART_RATE],
@@ -200,14 +197,14 @@ class _HomePageState extends State<HomePage> {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: Styles.defaultSpacing,
                 ),
-                Text(
+                const Text(
                   'Hubungkan Health Connect untuk melihat data kesehatanmu.',
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: Styles.bigSpacing,
                 ),
                 CustomButton(
@@ -221,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                     setState(() {});
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: Styles.defaultSpacing,
                 ),
               ],
@@ -587,7 +584,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(width: 1.w),
               GestureDetector(
                 onTap: () {
-                  AutoRouter.of(context).navigate(const MeditationRoute());
+                  AutoRouter.of(context).navigate(MeditationRoute());
                 },
                 child: Text(
                   context.l10n.viewAll,
@@ -613,8 +610,8 @@ class _HomePageState extends State<HomePage> {
             builder: (context, state) {
               final dummyList =
                   List.generate(3, (index) => generateMockMeditationModel());
-              return state.maybeMap(
-                loaded: (s) => _buildMeditationList(s.list, false),
+              return state.meditations.maybeMap(
+                data: (s) => _buildMeditationList(s.data, false),
                 orElse: () => _buildMeditationList(dummyList, true),
               );
             },
@@ -691,8 +688,7 @@ class _HomePageState extends State<HomePage> {
                   flex: 4,
                   child: CustomButton(
                     fontSize: 16,
-                    buttonText:
-                        context.l10n.introductionDayButtonText,
+                    buttonText: context.l10n.introductionDayButtonText,
                     onPressed: () {
                       AutoRouter.of(context).navigate(const ChatbotRoute());
                     },

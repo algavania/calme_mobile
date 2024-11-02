@@ -1,27 +1,25 @@
+import 'package:calme_mobile/core/color_values.dart';
+import 'package:calme_mobile/core/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../core/color_values.dart';
-import '../../../core/styles.dart';
-
 class SliderPage extends StatelessWidget {
+  const SliderPage({
+    required this.title,
+    required this.description,
+    required this.image,
+    super.key,
+  });
+
   final String title;
   final String description;
   final String image;
-
-  const SliderPage(
-      {super.key,
-      required this.title,
-      required this.description,
-      required this.image});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const SizedBox(height: 100),
           Image.asset(

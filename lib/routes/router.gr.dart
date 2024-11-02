@@ -423,10 +423,13 @@ class MeditationDetailRouteArgs {
 
 /// generated route for
 /// [MeditationPage]
-class MeditationRoute extends PageRouteInfo<void> {
-  const MeditationRoute({List<PageRouteInfo>? children})
-      : super(
+class MeditationRoute extends PageRouteInfo<MeditationRouteArgs> {
+  MeditationRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           MeditationRoute.name,
+          args: MeditationRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -435,9 +438,22 @@ class MeditationRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const MeditationPage();
+      final args = data.argsAs<MeditationRouteArgs>(
+          orElse: () => const MeditationRouteArgs());
+      return MeditationPage(key: args.key);
     },
   );
+}
+
+class MeditationRouteArgs {
+  const MeditationRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'MeditationRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

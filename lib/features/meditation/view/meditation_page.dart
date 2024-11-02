@@ -3,8 +3,7 @@ import 'package:calme_mobile/core/color_values.dart';
 import 'package:calme_mobile/core/styles.dart';
 import 'package:calme_mobile/data/models/meditation/meditation_model.dart';
 import 'package:calme_mobile/data/models/meditation/session_model.dart';
-import 'package:calme_mobile/features/meditation/bloc/meditation_bloc.dart';
-import 'package:calme_mobile/features/meditation/data/repository/meditation_repository.dart';
+import 'package:calme_mobile/features/meditation/view/bloc/meditation_bloc.dart';
 import 'package:calme_mobile/injector/injector.dart';
 import 'package:calme_mobile/l10n/l10n.dart';
 import 'package:calme_mobile/routes/router.dart';
@@ -18,21 +17,17 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:unicons/unicons.dart';
 
 @RoutePage()
-class MeditationPage extends StatefulWidget {
-  const MeditationPage({super.key});
+class MeditationPage extends StatelessWidget {
+  MeditationPage({super.key});
 
-  @override
-  State<MeditationPage> createState() => _MeditationPageState();
-}
-
-class _MeditationPageState extends State<MeditationPage> {
   final TextEditingController _searchController = TextEditingController();
-  final _bloc =
-      MeditationBloc(repository: Injector.instance<MeditationRepository>());
+
+  final _bloc = Injector.instance<MeditationBloc>();
+
   final _dummyList = <MeditationModel>[];
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     _bloc.add(const MeditationEvent.getAllMeditations());
     final dummySession = generateMockSessionModel();
     _dummyList.addAll(
@@ -42,11 +37,6 @@ class _MeditationPageState extends State<MeditationPage> {
             .copyWith(sessions: [dummySession, dummySession, dummySession]);
       }),
     );
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         title: context.l10n.meditation,
@@ -62,7 +52,7 @@ class _MeditationPageState extends State<MeditationPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _buildMeditationSectionWidget(),
+                    _buildMeditationSectionWidget(context),
                     const SizedBox(height: Styles.defaultSpacing),
                   ],
                 ),
@@ -74,7 +64,7 @@ class _MeditationPageState extends State<MeditationPage> {
     );
   }
 
-  Widget _buildMeditationSectionWidget() {
+  Widget _buildMeditationSectionWidget(BuildContext context) {
     return Container(
       color: Colors.white,
       width: MediaQuery.of(context).size.width,
@@ -104,9 +94,9 @@ class _MeditationPageState extends State<MeditationPage> {
           BlocBuilder<MeditationBloc, MeditationState>(
             bloc: _bloc,
             builder: (context, state) {
-              return state.maybeMap(
-                loaded: (s) => _buildList(s.list, false),
-                orElse: () => _buildList(_dummyList, true),
+              return state.meditations.maybeMap(
+                data: (s) => _buildList(s.data, false, context),
+                orElse: () => _buildList(_dummyList, true, context),
               );
             },
           ),
@@ -116,7 +106,11 @@ class _MeditationPageState extends State<MeditationPage> {
     );
   }
 
-  Widget _buildList(List<MeditationModel> list, bool isLoading) {
+  Widget _buildList(
+    List<MeditationModel> list,
+    bool isLoading,
+    BuildContext context,
+  ) {
     return Skeletonizer(
       enabled: isLoading,
       child: ListView.separated(
@@ -139,7 +133,7 @@ class _MeditationPageState extends State<MeditationPage> {
     );
   }
 
-  Widget _buildTopSearchWidget() {
+  Widget _buildTopSearchWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
       child: CustomTextField(
@@ -151,7 +145,7 @@ class _MeditationPageState extends State<MeditationPage> {
     );
   }
 
-  Widget _buildAppBar() {
+  Widget _buildAppBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
       child: Row(

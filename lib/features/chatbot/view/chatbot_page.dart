@@ -1,7 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:calme_mobile/core/color_values.dart';
 import 'package:calme_mobile/core/styles.dart';
-import 'package:calme_mobile/database/db_helper.dart';
 import 'package:calme_mobile/l10n/l10n.dart';
 import 'package:calme_mobile/util/extensions.dart';
 import 'package:calme_mobile/util/logger.dart';

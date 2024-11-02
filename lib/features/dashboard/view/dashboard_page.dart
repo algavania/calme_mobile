@@ -18,7 +18,7 @@ class _DashboardPageState extends State<DashboardPage> {
     return AutoTabsScaffold(
       routes: [
         const HomeRoute(),
-        const MeditationRoute(),
+        MeditationRoute(),
         ArticleRoute(),
         JournalRoute(),
         ProfileRoute(),

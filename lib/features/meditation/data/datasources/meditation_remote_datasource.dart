@@ -1,9 +1,14 @@
 import 'package:calme_mobile/data/models/meditation/meditation_model.dart';
 import 'package:calme_mobile/data/models/meditation/session_model.dart';
 import 'package:calme_mobile/database/db_helper.dart';
-import 'package:calme_mobile/features/meditation/data/repository/meditation_repository.dart';
 
-class MeditationRepositoryImpl extends MeditationRepository {
+abstract class MeditationRemoteDataSource {
+  Future<List<MeditationModel>> getMeditations();
+
+  Future<List<SessionModel>> getMeditationSessions(String meditationId);
+}
+
+class MeditationRemoteDataSourceImpl implements MeditationRemoteDataSource {
   final db = DbHelper.db;
 
   @override
@@ -37,5 +42,4 @@ class MeditationRepositoryImpl extends MeditationRepository {
     }
     return list;
   }
-
 }

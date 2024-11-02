@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:calme_mobile/core/color_values.dart';
+import 'package:calme_mobile/core/styles.dart';
 import 'package:calme_mobile/data/models/meditation/meditation_model.dart';
 import 'package:calme_mobile/data/models/meditation/session_model.dart';
 import 'package:flutter/material.dart';
@@ -7,28 +9,31 @@ import 'package:sizer/sizer.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:unicons/unicons.dart';
 
-import '../core/color_values.dart';
-import '../core/styles.dart';
-
 class StepCardWidget extends StatelessWidget {
-  const StepCardWidget(
-      {super.key,
-      required this.sessionModel,
-      this.isFirst = false,
-      this.isLast = false,
-      this.isActive = false,
-      this.isNetwork = false,
-      this.isNextDisabled = false,
-      required this.sessionStep, required this.meditationModel});
+  const StepCardWidget({
+    required this.sessionModel,
+    required this.sessionStep,
+    required this.meditationModel,
+    super.key,
+    this.isFirst = false,
+    this.isLast = false,
+    this.isActive = false,
+    this.isNetwork = false,
+    this.isNextDisabled = false,
+  });
 
   final MeditationModel meditationModel;
   final SessionModel sessionModel;
   final String sessionStep;
-  final bool isFirst, isLast, isActive, isNextDisabled, isNetwork;
+  final bool isFirst;
+  final bool isLast;
+  final bool isActive;
+  final bool isNextDisabled;
+  final bool isNetwork;
 
   @override
   Widget build(BuildContext context) {
-    BorderSide border = const BorderSide(color: ColorValues.grey10, width: 1);
+    const border = BorderSide(color: ColorValues.grey10);
 
     return TimelineTile(
       alignment: TimelineAlign.manual,
@@ -40,11 +45,12 @@ class StepCardWidget extends StatelessWidget {
         height: 35,
         indicator: Container(
           decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: isActive ? ColorValues.success40 : Colors.white,
-              border: isActive
-                  ? null
-                  : Border.all(color: ColorValues.grey10, width: 2)),
+            shape: BoxShape.circle,
+            color: isActive ? ColorValues.success40 : Colors.white,
+            border: isActive
+                ? null
+                : Border.all(color: ColorValues.grey10, width: 2),
+          ),
           child: Center(
             child: Icon(
               isActive ? UniconsSolid.check : UniconsLine.lock,
@@ -62,16 +68,18 @@ class StepCardWidget extends StatelessWidget {
             margin:
                 const EdgeInsets.only(left: 5, bottom: Styles.defaultSpacing),
             decoration: BoxDecoration(
-                color: isActive ? ColorValues.success10 : Colors.white,
-                borderRadius: BorderRadius.circular(Styles.defaultBorder),
-                border: Border(
-                    top: const BorderSide(
-                      color: ColorValues.grey10,
-                      width: 5,
-                    ),
-                    left: border,
-                    right: border,
-                    bottom: border)),
+              color: isActive ? ColorValues.success10 : Colors.white,
+              borderRadius: BorderRadius.circular(Styles.defaultBorder),
+              border: const Border(
+                top: BorderSide(
+                  color: ColorValues.grey10,
+                  width: 5,
+                ),
+                left: border,
+                right: border,
+                bottom: border,
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -81,44 +89,50 @@ class StepCardWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 1.h),
                 RichText(
-                    text: TextSpan(
-                        text: 'Sesi $sessionStep   •   ',
+                  text: TextSpan(
+                    text: 'Sesi $sessionStep   •   ',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall
+                        ?.copyWith(color: ColorValues.grey50),
+                    children: [
+                      TextSpan(
+                        text: '5 menit',
                         style: Theme.of(context)
                             .textTheme
-                            .displaySmall
+                            .bodySmall
                             ?.copyWith(color: ColorValues.grey50),
-                        children: [
-                      TextSpan(
-                          text: '5 menit',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(color: ColorValues.grey50))
-                    ])),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: 0.5.h),
               ],
             ),
           ),
           Align(
-              alignment: Alignment.bottomRight,
-              child: isNetwork
-                  ? CachedNetworkImage(
-                      imageUrl: sessionModel.thumbnailUrl,
-                      width: 20.w,
-                      height: 20.w,
-                    )
-                  : SvgPicture.asset(
-                      sessionModel.thumbnailUrl,
-                      width: 20.w,
-                    )),
+            alignment: Alignment.bottomRight,
+            child: isNetwork
+                ? CachedNetworkImage(
+                    imageUrl: sessionModel.thumbnailUrl,
+                    width: 20.w,
+                    height: 20.w,
+                  )
+                : SvgPicture.asset(
+                    sessionModel.thumbnailUrl,
+                    width: 20.w,
+                  ),
+          ),
         ],
       ),
       beforeLineStyle: LineStyle(
-          color: isActive ? ColorValues.success40 : ColorValues.grey10,
-          thickness: 2),
+        color: isActive ? ColorValues.success40 : ColorValues.grey10,
+        thickness: 2,
+      ),
       afterLineStyle: LineStyle(
-          color: !isNextDisabled ? ColorValues.success40 : ColorValues.grey10,
-          thickness: 2),
+        color: !isNextDisabled ? ColorValues.success40 : ColorValues.grey10,
+        thickness: 2,
+      ),
     );
   }
 }

@@ -4,28 +4,32 @@ import 'package:sizer/sizer.dart';
 import 'package:unicons/unicons.dart';
 
 class CustomTextField extends StatefulWidget {
-  const CustomTextField(
-      {Key? key,
-      required this.controller,
-      this.validator,
-      this.isRequired = true,
-      this.isPassword = false,
-      this.isDense = false,
-      this.isRounded = true,
-      this.expands = false,
-      this.autofocus = false,
-      this.label,
-      this.hint,
-      this.icon,
-      this.textInputType,
-      this.onChanged,
-      this.maxLines = 1,
-      this.minLines = 1, this.focusNode})
-      : super(key: key);
+  const CustomTextField({
+    required this.controller,
+    super.key,
+    this.validator,
+    this.isRequired = true,
+    this.isPassword = false,
+    this.isDense = false,
+    this.isRounded = true,
+    this.expands = false,
+    this.autofocus = false,
+    this.label,
+    this.hint,
+    this.icon,
+    this.textInputType,
+    this.onChanged,
+    this.maxLines = 1,
+    this.minLines = 1,
+    this.focusNode,
+  });
+
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final void Function(String?)? onChanged;
-  final bool isRequired, isPassword, isDense;
+  final bool isRequired;
+  final bool isPassword;
+  final bool isDense;
   final String? label;
   final String? hint;
   final IconData? icon;
@@ -48,9 +52,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return widget.isRounded
         ? OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: color, width: 1))
+            borderSide: BorderSide(color: color),
+          )
         : const UnderlineInputBorder(
-            borderSide: BorderSide(width: 0, color: Colors.transparent));
+            borderSide: BorderSide(width: 0, color: Colors.transparent),
+          );
   }
 
   @override
@@ -60,14 +66,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
       children: [
         if (widget.label != null)
           RichText(
-              text: TextSpan(
-                  text: widget.label,
-                  style: Theme.of(context).textTheme.displaySmall,
-                  children: [
+            text: TextSpan(
+              text: widget.label,
+              style: Theme.of(context).textTheme.displaySmall,
+              children: [
                 if (widget.isRequired)
                   const TextSpan(
-                      text: '*', style: TextStyle(color: ColorValues.danger50))
-              ])),
+                    text: '*',
+                    style: TextStyle(color: ColorValues.danger50),
+                  ),
+              ],
+            ),
+          ),
         if (widget.label != null) const SizedBox(height: 8),
         TextFormField(
           focusNode: widget.focusNode,
@@ -92,9 +102,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             border: _getBorder(),
             isDense: widget.isDense,
             focusedBorder: _getBorder(
-                color: widget.isRounded
-                    ? ColorValues.primary50
-                    : Colors.transparent),
+              color:
+                  widget.isRounded ? ColorValues.primary50 : Colors.transparent,
+            ),
             enabledBorder: _getBorder(),
             disabledBorder: _getBorder(),
             errorBorder: _getBorder(color: ColorValues.danger50),
