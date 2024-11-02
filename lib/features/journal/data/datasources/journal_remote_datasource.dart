@@ -1,10 +1,22 @@
 import 'package:calme_mobile/data/models/journal/journal_model.dart';
 import 'package:calme_mobile/data/models/journal/question_model.dart';
 import 'package:calme_mobile/database/db_helper.dart';
-import 'package:calme_mobile/features/journal/data/repository/journal_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class JournalRepositoryImpl extends JournalRepository {
+abstract class JournalRemoteDataSource {
+  Future<List<JournalModel>> getAllJournals();
+
+  Future<List<QuestionModel>> getJournalQuestions(String journalId);
+
+  Future<List<JournalAnswerModel>> getJournalAnswers(String journalId);
+
+  Future<void> saveJournalAnswers(
+    String journalId,
+    List<JournalAnswerModel> list,
+  );
+}
+
+class JournalRemoteDataSourceImpl extends JournalRemoteDataSource {
   final db = DbHelper.db;
   final auth = DbHelper.auth;
 
@@ -40,7 +52,9 @@ class JournalRepositoryImpl extends JournalRepository {
 
   @override
   Future<void> saveJournalAnswers(
-      String journalId, List<JournalAnswerModel> list) async {
+    String journalId,
+    List<JournalAnswerModel> list,
+  ) async {
     final uid = auth.currentUser!.uid;
     final batch = db.batch();
     final ref = db
@@ -51,7 +65,10 @@ class JournalRepositoryImpl extends JournalRepository {
         .collection(DbHelper.journalAnswers);
     for (final data in list) {
       batch.set(
-          ref.doc(data.questionId), data.toJson(), SetOptions(merge: true));
+        ref.doc(data.questionId),
+        data.toJson(),
+        SetOptions(merge: true),
+      );
     }
     await batch.commit();
   }

@@ -3,8 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calme_mobile/core/color_values.dart';
 import 'package:calme_mobile/core/styles.dart';
 import 'package:calme_mobile/data/models/journal/journal_model.dart';
-import 'package:calme_mobile/features/journal/bloc/journal_bloc.dart';
-import 'package:calme_mobile/features/journal/data/repository/journal_repository.dart';
+import 'package:calme_mobile/features/journal/view/bloc/journal_bloc.dart';
 import 'package:calme_mobile/injector/injector.dart';
 import 'package:calme_mobile/l10n/l10n.dart';
 import 'package:calme_mobile/routes/router.dart';
@@ -27,30 +26,41 @@ class JournalStartPage extends StatefulWidget {
 }
 
 class _JournalStartPageState extends State<JournalStartPage> {
-  final _bloc = JournalBloc(repository: Injector.instance<JournalRepository>());
+  final _bloc = Injector.instance<JournalBloc>();
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<JournalBloc, JournalState>(
       bloc: _bloc,
       listener: (context, state) {
-        state.maybeMap(
+        state.answers.maybeMap(
+          orElse: () {},
           loading: (_) {
             context.loaderOverlay.show();
           },
-          questionsLoaded: (s) {
+        );
+        state.questions.maybeMap(
+          loading: (_) {
+            context.loaderOverlay.show();
+          },
+          data: (s) {
             context.loaderOverlay.hide();
-            AutoRouter.of(context).push(
-              JournalDetailRoute(
-                answers: s.answers,
-                questions: s.list,
-                journalModel: widget.journalModel,
-              ),
+            state.answers.maybeWhen(
+              orElse: () {},
+              data: (answers) {
+                AutoRouter.of(context).push(
+                  JournalDetailRoute(
+                    answers: answers,
+                    questions: s.data,
+                    journalModel: widget.journalModel,
+                  ),
+                );
+              },
             );
           },
           error: (s) {
             context.loaderOverlay.hide();
-            context.showSnackBar(message: s.error, isSuccess: false);
+            context.showSnackBar(message: s.message, isSuccess: false);
           },
           orElse: () {},
         );

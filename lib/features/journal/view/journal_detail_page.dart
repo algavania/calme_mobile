@@ -5,8 +5,7 @@ import 'package:calme_mobile/core/styles.dart';
 import 'package:calme_mobile/data/models/journal/journal_model.dart';
 import 'package:calme_mobile/data/models/journal/question_model.dart';
 import 'package:calme_mobile/database/db_helper.dart';
-import 'package:calme_mobile/features/journal/bloc/journal_bloc.dart';
-import 'package:calme_mobile/features/journal/data/repository/journal_repository.dart';
+import 'package:calme_mobile/features/journal/view/bloc/journal_bloc.dart';
 import 'package:calme_mobile/injector/injector.dart';
 import 'package:calme_mobile/l10n/l10n.dart';
 import 'package:calme_mobile/util/extensions.dart';
@@ -36,18 +35,19 @@ class JournalDetailPage extends StatefulWidget {
 }
 
 class _JournalDetailPageState extends State<JournalDetailPage> {
-  final _bloc = JournalBloc(repository: Injector.instance<JournalRepository>());
+  final _bloc = Injector.instance<JournalBloc>();
   int _index = 0;
   final _controllers = <TextEditingController>[];
   final _nodes = <FocusNode>[];
 
   @override
   void initState() {
+    super.initState();
     _controllers.addAll(
       List.generate(widget.questions.length, (index) {
         var answer = '';
         final id = widget.answers.indexWhere(
-          (element) => element.questionId == widget.questions[index].id!,
+              (element) => element.questionId == widget.questions[index].id!,
         );
         if (id != -1) {
           answer = widget.answers[id].answer;
@@ -56,7 +56,6 @@ class _JournalDetailPageState extends State<JournalDetailPage> {
       }),
     );
     _nodes.addAll(List.generate(widget.questions.length, (_) => FocusNode()));
-    super.initState();
   }
 
   @override
@@ -64,17 +63,19 @@ class _JournalDetailPageState extends State<JournalDetailPage> {
     return BlocListener<JournalBloc, JournalState>(
       bloc: _bloc,
       listener: (context, state) {
-        state.maybeMap(
+        state.saveAnswersStatus.maybeMap(
           loading: (_) {
             context.loaderOverlay.show();
           },
           error: (s) {
             context.loaderOverlay.hide();
-            context.showSnackBar(message: s.error, isSuccess: false);
+            context.showSnackBar(message: s.message, isSuccess: false);
           },
-          success: (_) {
+          data: (s) {
             context.loaderOverlay.hide();
-            AutoRouter.of(context).popUntilRoot();
+            if (s.data) {
+              AutoRouter.of(context).popUntilRoot();
+            }
           },
           orElse: () {
             context.loaderOverlay.hide();

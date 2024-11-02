@@ -2,8 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:calme_mobile/core/color_values.dart';
 import 'package:calme_mobile/core/styles.dart';
 import 'package:calme_mobile/data/models/journal/journal_model.dart';
-import 'package:calme_mobile/features/journal/bloc/journal_bloc.dart';
-import 'package:calme_mobile/features/journal/data/repository/journal_repository.dart';
+import 'package:calme_mobile/features/journal/view/bloc/journal_bloc.dart';
 import 'package:calme_mobile/injector/injector.dart';
 import 'package:calme_mobile/l10n/l10n.dart';
 import 'package:calme_mobile/routes/router.dart';
@@ -21,32 +20,26 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:unicons/unicons.dart';
 
 @RoutePage()
-class JournalPage extends StatefulWidget {
-  const JournalPage({super.key});
+class JournalPage extends StatelessWidget {
+  JournalPage({super.key});
 
-  @override
-  State<JournalPage> createState() => _JournalPageState();
-}
-
-class _JournalPageState extends State<JournalPage> {
   final TextEditingController _searchController = TextEditingController();
-  final _bloc = JournalBloc(repository: Injector.instance<JournalRepository>());
+  final _bloc = Injector.instance<JournalBloc>();
 
-  @override
-  void initState() {
+  void _getData() {
     _bloc.add(const JournalEvent.getAllJournals());
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    _getData();
     return BlocListener<JournalBloc, JournalState>(
       bloc: _bloc,
       listener: (context, state) {
-        state.maybeMap(
+        state.journals.maybeMap(
           error: (s) {
             context.loaderOverlay.hide();
-            context.showSnackBar(message: s.error, isSuccess: false);
+            context.showSnackBar(message: s.message, isSuccess: false);
           },
           orElse: () {},
         );
@@ -63,16 +56,22 @@ class _JournalPageState extends State<JournalPage> {
               ),
               const SizedBox(height: Styles.defaultSpacing),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // _buildTopSearchWidget(),
-                      // const SizedBox(height: Styles.defaultSpacing),
-                      // _buildMyJournalCardWidget(),
-                      // const SizedBox(height: Styles.defaultSpacing),
-                      _buildJournalSectionWidget(),
-                      const SizedBox(height: Styles.defaultSpacing),
-                    ],
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    _getData();
+                  },
+                  child: SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: Column(
+                      children: [
+                        // _buildTopSearchWidget(),
+                        // const SizedBox(height: Styles.defaultSpacing),
+                        // _buildMyJournalCardWidget(),
+                        // const SizedBox(height: Styles.defaultSpacing),
+                        _buildJournalSectionWidget(context),
+                        const SizedBox(height: Styles.defaultSpacing),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -83,7 +82,7 @@ class _JournalPageState extends State<JournalPage> {
     );
   }
 
-  Widget _buildMyJournalCardWidget() {
+  Widget _buildMyJournalCardWidget(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(Styles.defaultPadding),
       decoration: BoxDecoration(
@@ -147,7 +146,7 @@ class _JournalPageState extends State<JournalPage> {
     );
   }
 
-  Widget _buildJournalSectionWidget() {
+  Widget _buildJournalSectionWidget(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(Styles.defaultPadding),
@@ -178,9 +177,9 @@ class _JournalPageState extends State<JournalPage> {
             builder: (context, state) {
               final dummyList =
                   List.generate(5, (_) => generateMockJournalModel());
-              return state.maybeMap(
-                loaded: (s) => _buildList(s.list, false),
-                orElse: () => _buildList(dummyList, true),
+              return state.journals.maybeMap(
+                data: (s) => _buildList(s.data, false, context),
+                orElse: () => _buildList(dummyList, true, context),
               );
             },
           ),
@@ -190,7 +189,11 @@ class _JournalPageState extends State<JournalPage> {
     );
   }
 
-  Widget _buildList(List<JournalModel> list, bool isLoading) {
+  Widget _buildList(
+    List<JournalModel> list,
+    bool isLoading,
+    BuildContext context,
+  ) {
     return Skeletonizer(
       enabled: isLoading,
       child: ListView.separated(
@@ -201,7 +204,7 @@ class _JournalPageState extends State<JournalPage> {
             AutoRouter.of(context)
                 .push(JournalStartRoute(journalModel: list[i]));
           },
-          child: _buildJournalItemCardWidget(list[i]),
+          child: _buildJournalItemCardWidget(list[i], context),
         ),
         separatorBuilder: (_, __) => const SizedBox(
           height: Styles.defaultSpacing,
@@ -211,7 +214,10 @@ class _JournalPageState extends State<JournalPage> {
     );
   }
 
-  Widget _buildJournalItemCardWidget(JournalModel journal) {
+  Widget _buildJournalItemCardWidget(
+    JournalModel journal,
+    BuildContext context,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -254,7 +260,7 @@ class _JournalPageState extends State<JournalPage> {
     );
   }
 
-  Widget _buildTopSearchWidget() {
+  Widget _buildTopSearchWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
       child: CustomTextField(

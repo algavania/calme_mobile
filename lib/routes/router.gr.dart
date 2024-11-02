@@ -242,10 +242,13 @@ class JournalDetailRouteArgs {
 
 /// generated route for
 /// [JournalPage]
-class JournalRoute extends PageRouteInfo<void> {
-  const JournalRoute({List<PageRouteInfo>? children})
-      : super(
+class JournalRoute extends PageRouteInfo<JournalRouteArgs> {
+  JournalRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           JournalRoute.name,
+          args: JournalRouteArgs(key: key),
           initialChildren: children,
         );
 
@@ -254,9 +257,22 @@ class JournalRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const JournalPage();
+      final args =
+          data.argsAs<JournalRouteArgs>(orElse: () => const JournalRouteArgs());
+      return JournalPage(key: args.key);
     },
   );
+}
+
+class JournalRouteArgs {
+  const JournalRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'JournalRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

@@ -20,7 +20,7 @@ class _DashboardPageState extends State<DashboardPage> {
         const HomeRoute(),
         const MeditationRoute(),
         ArticleRoute(),
-        const JournalRoute(),
+        JournalRoute(),
         ProfileRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {

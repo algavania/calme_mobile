@@ -8,8 +8,9 @@ import 'package:calme_mobile/features/authentication/domain/repositories/auth_re
 import 'package:calme_mobile/features/coping/data/datasources/coping_remote_datasource.dart';
 import 'package:calme_mobile/features/coping/data/repositories/coping_repository_impl.dart';
 import 'package:calme_mobile/features/coping/domain/repositories/coping_repository.dart';
-import 'package:calme_mobile/features/journal/data/repository/journal_repository.dart';
-import 'package:calme_mobile/features/journal/data/repository/journal_repository_impl.dart';
+import 'package:calme_mobile/features/journal/data/datasources/journal_remote_datasource.dart';
+import 'package:calme_mobile/features/journal/data/repositories/journal_repository_impl.dart';
+import 'package:calme_mobile/features/journal/domain/repositories/journal_repository.dart';
 import 'package:calme_mobile/features/meditation/data/repository/meditation_repository.dart';
 import 'package:calme_mobile/features/meditation/data/repository/meditation_repository_impl.dart';
 import 'package:calme_mobile/injector/injector.dart';
@@ -25,7 +26,9 @@ class RepositoryModule {
         ),
       )
       ..registerFactory<JournalRepository>(
-        JournalRepositoryImpl.new,
+            () => JournalRepositoryImpl(
+          Injector.instance<JournalRemoteDataSource>(),
+        ),
       )
       ..registerFactory<MeditationRepository>(
         MeditationRepositoryImpl.new,

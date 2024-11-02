@@ -7,6 +7,11 @@ import 'package:calme_mobile/features/authentication/domain/usecases/logout.dart
 import 'package:calme_mobile/features/authentication/domain/usecases/register.dart';
 import 'package:calme_mobile/features/coping/domain/repositories/coping_repository.dart';
 import 'package:calme_mobile/features/coping/domain/usecases/get_copings.dart';
+import 'package:calme_mobile/features/journal/domain/repositories/journal_repository.dart';
+import 'package:calme_mobile/features/journal/domain/usecases/get_journal_answers.dart';
+import 'package:calme_mobile/features/journal/domain/usecases/get_journal_questions.dart';
+import 'package:calme_mobile/features/journal/domain/usecases/get_journals.dart';
+import 'package:calme_mobile/features/journal/domain/usecases/save_journal_answers.dart';
 import 'package:calme_mobile/injector/injector.dart';
 
 class UseCasesModule {
@@ -35,16 +40,40 @@ class UseCasesModule {
           Injector.instance<AuthRepository>(),
         ),
       )
-    /// Article Use Cases
+
+      /// Article Use Cases
       ..registerLazySingleton<GetArticles>(
         () => GetArticles(
           Injector.instance<ArticleRepository>(),
         ),
       )
-    /// Coping Use Cases
+
+      /// Coping Use Cases
       ..registerLazySingleton<GetCopings>(
-            () => GetCopings(
+        () => GetCopings(
           Injector.instance<CopingRepository>(),
+        ),
+      )
+
+      /// Journal Use Cases
+      ..registerLazySingleton<GetJournalAnswers>(
+        () => GetJournalAnswers(
+          Injector.instance<JournalRepository>(),
+        ),
+      )
+      ..registerLazySingleton<GetJournalQuestions>(
+        () => GetJournalQuestions(
+          Injector.instance<JournalRepository>(),
+        ),
+      )
+      ..registerLazySingleton<GetJournals>(
+        () => GetJournals(
+          Injector.instance<JournalRepository>(),
+        ),
+      )
+      ..registerLazySingleton<SaveJournalAnswers>(
+        () => SaveJournalAnswers(
+          Injector.instance<JournalRepository>(),
         ),
       );
   }
