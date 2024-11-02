@@ -1,6 +1,7 @@
 import 'package:calme_mobile/data/models/timestamp_converter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:just_audio/just_audio.dart';
 
 part 'session_model.freezed.dart';
 
@@ -15,6 +16,7 @@ class SessionModel with _$SessionModel {
     required String audioUrl,
     @TimestampConverter() required DateTime createdAt,
     @JsonKey(includeToJson: false, includeFromJson: false) String? id,
+    @JsonKey(includeToJson: false, includeFromJson: false) AudioPlayer? player,
   }) = _SessionModel;
 
   factory SessionModel.fromJson(Map<String, Object?> json) =>

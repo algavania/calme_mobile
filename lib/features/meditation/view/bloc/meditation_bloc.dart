@@ -6,6 +6,7 @@ import 'package:calme_mobile/features/meditation/domain/usecases/get_meditations
 import 'package:calme_mobile/injector/injector.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:just_audio/just_audio.dart';
 
 part 'meditation_event.dart';
 
@@ -45,8 +46,20 @@ class MeditationBloc extends Bloc<MeditationEvent, MeditationState> {
       var i = 0;
       for (final e in meditations) {
         final result = await _getMeditationSessions.call(e.id!);
-        result.fold((_) {}, (s) {
-          meditations[i] = e.copyWith(sessions: s);
+        await result.fold((_) {}, (s) async {
+          final sessions = s;
+          var j = 0;
+          for (var session in sessions) {
+            final player = AudioPlayer();
+            await player
+                .setAudioSource(AudioSource.uri(Uri.parse(session.audioUrl)));
+            session = session.copyWith(
+              player: player,
+            );
+            sessions[j] = session;
+            j++;
+          }
+          meditations[i] = e.copyWith(sessions: sessions);
         });
         i++;
       }

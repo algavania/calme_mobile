@@ -8,9 +8,7 @@ import 'package:calme_mobile/data/models/meditation/meditation_model.dart';
 import 'package:calme_mobile/util/logger.dart';
 import 'package:calme_mobile/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 import 'package:unicons/unicons.dart';
 
@@ -29,48 +27,15 @@ class SessionPage extends StatefulWidget {
 
 class _SessionPageState extends State<SessionPage> {
   var _index = 0;
-  var _isLoading = true;
   int? _nowPlayingIndex;
-  final _players = <AudioPlayer>[];
-
-  @override
-  void initState() {
-    _getPlayers();
-    super.initState();
-  }
-
-  Future<void> _getPlayers() async {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      context.loaderOverlay.show();
-    });
-    final sessions = widget.meditationModel.sessions;
-    var i = 0;
-    for (final data in sessions) {
-      final player = AudioPlayer();
-      if (i == 0) {
-        await player.setAudioSource(AudioSource.uri(Uri.parse(data.audioUrl)));
-      }
-      _players.add(player);
-      i++;
-    }
-    if (mounted) {
-      context.loaderOverlay.hide();
-    }
-    setState(() {
-      _isLoading = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('$_isLoading');
     return Scaffold(
       appBar: const CustomAppBar(
         title: 'Sesi Meditasi',
       ),
-      body: _isLoading
-          ? const SizedBox.shrink()
-          : Container(
+      body: Container(
               width: 100.w,
               height: 100.h,
               padding: const EdgeInsets.all(Styles.defaultPadding),
@@ -97,6 +62,8 @@ class _SessionPageState extends State<SessionPage> {
   }
 
   Widget _buildBottomButton() {
+    final player = widget.meditationModel.sessions[_index].player!;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -107,18 +74,19 @@ class _SessionPageState extends State<SessionPage> {
               backgroundColor: ColorValues.primary30,
             ),
             onPressed: () async {
-              final isMute = _players[_index].volume == 0;
+              final player = widget.meditationModel.sessions[_index].player!;
+              final isMute = player.volume == 0;
               if (isMute) {
-                await _players[_index].setVolume(1);
+                await player.setVolume(1);
               } else {
-                await _players[_index].setVolume(0);
+                await player.setVolume(0);
               }
               setState(() {});
             },
             child: Row(
               children: [
                 Icon(
-                  (_players[_index].volume) > 0
+                  (player.volume) > 0
                       ? UniconsLine.volume
                       : UniconsLine.volume_mute,
                   color: ColorValues.white,
@@ -127,7 +95,7 @@ class _SessionPageState extends State<SessionPage> {
                   width: Styles.defaultSpacing,
                 ),
                 Text(
-                  (_players[_index].volume) > 0 ? 'Audio On' : 'Audio Off',
+                  (player.volume) > 0 ? 'Audio On' : 'Audio Off',
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium
@@ -142,8 +110,9 @@ class _SessionPageState extends State<SessionPage> {
   }
 
   Widget _buildDuration() {
+    final player = widget.meditationModel.sessions[_index].player!;
     return StreamBuilder(
-      stream: _players[_index].positionStream,
+      stream: player.positionStream,
       builder: (context, snapshot) {
         final d = snapshot.data ?? Duration.zero;
         final sDuration = d.toString().split('.').first.padLeft(8, '0');
@@ -156,8 +125,9 @@ class _SessionPageState extends State<SessionPage> {
   }
 
   Widget _buildButton() {
+    final player = widget.meditationModel.sessions[_index].player!;
     return StreamBuilder<Object>(
-      stream: _players[_index].playingStream,
+      stream: player.playingStream,
       builder: (context, snapshot) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -180,18 +150,19 @@ class _SessionPageState extends State<SessionPage> {
               width: Styles.defaultSpacing,
             ),
             _buildCircleButton(
-              icon: _players[_index].playing
-                  ? UniconsLine.pause
-                  : UniconsLine.play,
+              icon: player.playing ? UniconsLine.pause : UniconsLine.play,
               iconColor: ColorValues.white,
               backgroundColor: ColorValues.primary50,
               onTap: () async {
                 logger.d('clicked in index $_index $_nowPlayingIndex');
                 if (_nowPlayingIndex != null && _nowPlayingIndex != _index) {
-                  unawaited(_players[_nowPlayingIndex!].pause());
+                  unawaited(
+                    widget.meditationModel.sessions[_nowPlayingIndex!].player
+                        ?.pause(),
+                  );
                   logger.d('pause test $_nowPlayingIndex');
                   unawaited(
-                    _players[_index].setAudioSource(
+                    player.setAudioSource(
                       AudioSource.uri(
                         Uri.parse(
                           widget.meditationModel.sessions[_index].audioUrl,
@@ -200,11 +171,11 @@ class _SessionPageState extends State<SessionPage> {
                     ),
                   );
                 }
-                if (_players[_index].playing) {
-                  unawaited(_players[_index].pause());
+                if (player.playing) {
+                  unawaited(player.pause());
                   _nowPlayingIndex = null;
                 } else {
-                  unawaited(_players[_index].play());
+                  unawaited(player.play());
                   _nowPlayingIndex = _index;
                 }
                 logger.d('now playing index $_nowPlayingIndex');
@@ -294,13 +265,5 @@ class _SessionPageState extends State<SessionPage> {
         ),
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    for (final data in _players) {
-      data.dispose();
-    }
-    super.dispose();
   }
 }

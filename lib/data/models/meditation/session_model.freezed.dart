@@ -28,6 +28,8 @@ mixin _$SessionModel {
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(includeToJson: false, includeFromJson: false)
   String? get id => throw _privateConstructorUsedError;
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  AudioPlayer? get player => throw _privateConstructorUsedError;
 
   /// Serializes this SessionModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +53,9 @@ abstract class $SessionModelCopyWith<$Res> {
       String thumbnailUrl,
       String audioUrl,
       @TimestampConverter() DateTime createdAt,
-      @JsonKey(includeToJson: false, includeFromJson: false) String? id});
+      @JsonKey(includeToJson: false, includeFromJson: false) String? id,
+      @JsonKey(includeToJson: false, includeFromJson: false)
+      AudioPlayer? player});
 }
 
 /// @nodoc
@@ -75,6 +79,7 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
     Object? audioUrl = null,
     Object? createdAt = null,
     Object? id = freezed,
+    Object? player = freezed,
   }) {
     return _then(_value.copyWith(
       order: null == order
@@ -101,6 +106,10 @@ class _$SessionModelCopyWithImpl<$Res, $Val extends SessionModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      player: freezed == player
+          ? _value.player
+          : player // ignore: cast_nullable_to_non_nullable
+              as AudioPlayer?,
     ) as $Val);
   }
 }
@@ -119,7 +128,9 @@ abstract class _$$SessionModelImplCopyWith<$Res>
       String thumbnailUrl,
       String audioUrl,
       @TimestampConverter() DateTime createdAt,
-      @JsonKey(includeToJson: false, includeFromJson: false) String? id});
+      @JsonKey(includeToJson: false, includeFromJson: false) String? id,
+      @JsonKey(includeToJson: false, includeFromJson: false)
+      AudioPlayer? player});
 }
 
 /// @nodoc
@@ -141,6 +152,7 @@ class __$$SessionModelImplCopyWithImpl<$Res>
     Object? audioUrl = null,
     Object? createdAt = null,
     Object? id = freezed,
+    Object? player = freezed,
   }) {
     return _then(_$SessionModelImpl(
       order: null == order
@@ -167,6 +179,10 @@ class __$$SessionModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      player: freezed == player
+          ? _value.player
+          : player // ignore: cast_nullable_to_non_nullable
+              as AudioPlayer?,
     ));
   }
 }
@@ -180,7 +196,8 @@ class _$SessionModelImpl implements _SessionModel {
       required this.thumbnailUrl,
       required this.audioUrl,
       @TimestampConverter() required this.createdAt,
-      @JsonKey(includeToJson: false, includeFromJson: false) this.id});
+      @JsonKey(includeToJson: false, includeFromJson: false) this.id,
+      @JsonKey(includeToJson: false, includeFromJson: false) this.player});
 
   factory _$SessionModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SessionModelImplFromJson(json);
@@ -199,10 +216,13 @@ class _$SessionModelImpl implements _SessionModel {
   @override
   @JsonKey(includeToJson: false, includeFromJson: false)
   final String? id;
+  @override
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  final AudioPlayer? player;
 
   @override
   String toString() {
-    return 'SessionModel(order: $order, length: $length, thumbnailUrl: $thumbnailUrl, audioUrl: $audioUrl, createdAt: $createdAt, id: $id)';
+    return 'SessionModel(order: $order, length: $length, thumbnailUrl: $thumbnailUrl, audioUrl: $audioUrl, createdAt: $createdAt, id: $id, player: $player)';
   }
 
   @override
@@ -218,13 +238,14 @@ class _$SessionModelImpl implements _SessionModel {
                 other.audioUrl == audioUrl) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            (identical(other.id, id) || other.id == id));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.player, player) || other.player == player));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, order, length, thumbnailUrl, audioUrl, createdAt, id);
+  int get hashCode => Object.hash(runtimeType, order, length, thumbnailUrl,
+      audioUrl, createdAt, id, player);
 
   /// Create a copy of SessionModel
   /// with the given fields replaced by the non-null parameter values.
@@ -249,8 +270,9 @@ abstract class _SessionModel implements SessionModel {
       required final String thumbnailUrl,
       required final String audioUrl,
       @TimestampConverter() required final DateTime createdAt,
+      @JsonKey(includeToJson: false, includeFromJson: false) final String? id,
       @JsonKey(includeToJson: false, includeFromJson: false)
-      final String? id}) = _$SessionModelImpl;
+      final AudioPlayer? player}) = _$SessionModelImpl;
 
   factory _SessionModel.fromJson(Map<String, dynamic> json) =
       _$SessionModelImpl.fromJson;
@@ -269,6 +291,9 @@ abstract class _SessionModel implements SessionModel {
   @override
   @JsonKey(includeToJson: false, includeFromJson: false)
   String? get id;
+  @override
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  AudioPlayer? get player;
 
   /// Create a copy of SessionModel
   /// with the given fields replaced by the non-null parameter values.
