@@ -225,12 +225,15 @@ class HomePage extends StatelessWidget {
             ),
             if (isLoading || analytics != null)Skeletonizer(
               enabled: isLoading,
-              child: Text(
-                analytics ?? 'Lorem ipsum dolor sit amet',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .bodySmall,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: Styles.defaultSpacing),
+                child: Text(
+                  analytics ?? 'Lorem ipsum dolor sit amet',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodySmall,
+                ),
               ),
             ),
           ],

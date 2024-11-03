@@ -34,22 +34,6 @@ class FitConnectRemoteDataSourceImpl extends FitConnectRemoteDataSource {
   @override
   Future<List<HealthDataPoint>> getHeartRates() async {
     final res = await _getHealthData([HealthDataType.HEART_RATE]);
-    if (res.isEmpty) {
-      res.add(
-        HealthDataPoint(
-          uuid: 'uuid',
-          value: NumericHealthValue(numericValue: 84),
-          type: HealthDataType.HEART_RATE,
-          unit: HealthDataUnit.BEATS_PER_MINUTE,
-          dateFrom: DateTime.now(),
-          dateTo: DateTime.now(),
-          sourcePlatform: HealthPlatformType.googleHealthConnect,
-          sourceDeviceId: 'sourceDeviceId',
-          sourceId: 'sourceId',
-          sourceName: 'sourceName',
-        ),
-      );
-    }
     return res;
   }
 

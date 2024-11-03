@@ -15,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 
-@RoutePage()
 class JournalStartPage extends StatefulWidget {
   const JournalStartPage({required this.journalModel, super.key});
 
@@ -33,24 +32,18 @@ class _JournalStartPageState extends State<JournalStartPage> {
     return BlocListener<JournalBloc, JournalState>(
       bloc: _bloc,
       listener: (context, state) {
-        state.answers.maybeMap(
-          orElse: () {},
-          loading: (_) {
-            context.loaderOverlay.show();
-          },
-        );
         state.questions.maybeMap(
           loading: (_) {
             context.loaderOverlay.show();
           },
           data: (s) {
             context.loaderOverlay.hide();
-            state.answers.maybeWhen(
+            state.answers.maybeMap(
               orElse: () {},
-              data: (answers) {
+              data: (d) {
                 AutoRouter.of(context).push(
                   JournalDetailRoute(
-                    answers: answers,
+                    answers: d.data,
                     questions: s.data,
                     journalModel: widget.journalModel,
                   ),

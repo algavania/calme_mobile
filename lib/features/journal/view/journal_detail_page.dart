@@ -17,7 +17,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 
-@RoutePage()
 class JournalDetailPage extends StatefulWidget {
   const JournalDetailPage({
     required this.journalModel,
@@ -42,12 +41,11 @@ class _JournalDetailPageState extends State<JournalDetailPage> {
 
   @override
   void initState() {
-    super.initState();
     _controllers.addAll(
       List.generate(widget.questions.length, (index) {
         var answer = '';
         final id = widget.answers.indexWhere(
-              (element) => element.questionId == widget.questions[index].id!,
+          (element) => element.questionId == widget.questions[index].id!,
         );
         if (id != -1) {
           answer = widget.answers[id].answer;
@@ -56,6 +54,7 @@ class _JournalDetailPageState extends State<JournalDetailPage> {
       }),
     );
     _nodes.addAll(List.generate(widget.questions.length, (_) => FocusNode()));
+    super.initState();
   }
 
   @override
@@ -71,11 +70,9 @@ class _JournalDetailPageState extends State<JournalDetailPage> {
             context.loaderOverlay.hide();
             context.showSnackBar(message: s.message, isSuccess: false);
           },
-          data: (s) {
+          data: (_) {
             context.loaderOverlay.hide();
-            if (s.data) {
-              AutoRouter.of(context).popUntilRoot();
-            }
+            AutoRouter.of(context).popUntilRoot();
           },
           orElse: () {
             context.loaderOverlay.hide();
@@ -84,7 +81,7 @@ class _JournalDetailPageState extends State<JournalDetailPage> {
       },
       child: PopScope(
         canPop: _index == 0,
-        onPopInvokedWithResult: (_, __) {
+        onPopInvoked: (_) {
           if (_index > 0) {
             setState(() {
               _index--;
@@ -107,7 +104,7 @@ class _JournalDetailPageState extends State<JournalDetailPage> {
                   onTap: () {
                     _nodes[_index].requestFocus();
                   },
-                  child: ColoredBox(
+                  child: Container(
                     color: Colors.white,
                     child: SingleChildScrollView(child: _buildAnswerWidget()),
                   ),

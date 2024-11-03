@@ -8,7 +8,6 @@ import 'package:calme_mobile/l10n/l10n.dart';
 import 'package:calme_mobile/routes/router.dart';
 import 'package:calme_mobile/util/extensions.dart';
 import 'package:calme_mobile/widgets/custom_app_bar.dart';
-import 'package:calme_mobile/widgets/custom_text_field.dart';
 import 'package:calme_mobile/widgets/glowing_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,20 +18,27 @@ import 'package:sizer/sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:unicons/unicons.dart';
 
-@RoutePage()
-class JournalPage extends StatelessWidget {
-  JournalPage({super.key});
+import 'package:calme_mobile/widgets/custom_text_field.dart';
 
+class JournalPage extends StatefulWidget {
+  const JournalPage({super.key});
+
+  @override
+  State<JournalPage> createState() => _JournalPageState();
+}
+
+class _JournalPageState extends State<JournalPage> {
   final TextEditingController _searchController = TextEditingController();
   final _bloc = Injector.instance<JournalBloc>();
 
-  void _getData() {
+  @override
+  void initState() {
     _bloc.add(const JournalEvent.getAllJournals());
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _getData();
     return BlocListener<JournalBloc, JournalState>(
       bloc: _bloc,
       listener: (context, state) {
@@ -41,8 +47,7 @@ class JournalPage extends StatelessWidget {
             context.loaderOverlay.hide();
             context.showSnackBar(message: s.message, isSuccess: false);
           },
-          orElse: () {},
-        );
+          orElse: () {},);
       },
       child: SafeArea(
         child: GestureDetector(
@@ -56,22 +61,16 @@ class JournalPage extends StatelessWidget {
               ),
               const SizedBox(height: Styles.defaultSpacing),
               Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    _getData();
-                  },
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        // _buildTopSearchWidget(),
-                        // const SizedBox(height: Styles.defaultSpacing),
-                        // _buildMyJournalCardWidget(),
-                        // const SizedBox(height: Styles.defaultSpacing),
-                        _buildJournalSectionWidget(context),
-                        const SizedBox(height: Styles.defaultSpacing),
-                      ],
-                    ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // _buildTopSearchWidget(),
+                      // const SizedBox(height: Styles.defaultSpacing),
+                      // _buildMyJournalCardWidget(),
+                      // const SizedBox(height: Styles.defaultSpacing),
+                      _buildJournalSectionWidget(),
+                      const SizedBox(height: Styles.defaultSpacing),
+                    ],
                   ),
                 ),
               ),
@@ -82,7 +81,7 @@ class JournalPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMyJournalCardWidget(BuildContext context) {
+  Widget _buildMyJournalCardWidget() {
     return Container(
       margin: const EdgeInsets.all(Styles.defaultPadding),
       decoration: BoxDecoration(
@@ -94,59 +93,58 @@ class JournalPage extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  context.l10n.journalTitle1,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(color: Colors.white),
-                ),
-                const SizedBox(height: Styles.smallerSpacing),
-                Text(
-                  '13 halaman',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Colors.white),
-                ),
-                const SizedBox(height: Styles.biggerSpacing),
-                Row(
-                  children: [
-                    LinearPercentIndicator(
-                      lineHeight: 20,
-                      width: 40.w,
-                      barRadius: const Radius.circular(Styles.defaultBorder),
-                      percent: 3 / 13,
-                      backgroundColor: Colors.white,
-                      progressColor: ColorValues.secondary50,
-                    ),
-                    Text(
-                      '3/13',
-                      style: Theme.of(context)
-                          .textTheme
-                          .displaySmall
-                          ?.copyWith(color: Colors.white),
-                    ),
-                    const SizedBox(width: Styles.defaultSpacing),
-                  ],
-                ),
-              ],
-            ),
-          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    context.l10n.journalTitle1,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(color: Colors.white),
+                  ),
+                  const SizedBox(height: Styles.smallerSpacing),
+                  Text(
+                    '13 halaman',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: Colors.white),
+                  ),
+                  const SizedBox(height: Styles.biggerSpacing),
+                  Row(
+                    children: [
+                      LinearPercentIndicator(
+                        lineHeight: 20,
+                        width: 40.w,
+                        barRadius: const Radius.circular(Styles.defaultBorder),
+                        percent: 3 / 13,
+                        backgroundColor: Colors.white,
+                        progressColor: ColorValues.secondary50,
+                      ),
+                      Text(
+                        '3/13',
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall
+                            ?.copyWith(color: Colors.white),
+                      ),
+                      const SizedBox(width: Styles.defaultSpacing),
+                    ],
+                  )
+                ],
+              )),
           const SizedBox(width: Styles.defaultSpacing),
           SvgPicture.asset(
             'assets/people/journal_question.svg',
             width: 25.w,
-          ),
+          )
         ],
       ),
     );
   }
 
-  Widget _buildJournalSectionWidget(BuildContext context) {
+  Widget _buildJournalSectionWidget() {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(Styles.defaultPadding),
@@ -176,10 +174,10 @@ class JournalPage extends StatelessWidget {
             bloc: _bloc,
             builder: (context, state) {
               final dummyList =
-                  List.generate(5, (_) => generateMockJournalModel());
+              List.generate(5, (_) => generateMockJournalModel());
               return state.journals.maybeMap(
-                data: (s) => _buildList(s.data, false, context),
-                orElse: () => _buildList(dummyList, true, context),
+                data: (s) => _buildList(s.data, false),
+                orElse: () => _buildList(dummyList, true),
               );
             },
           ),
@@ -189,35 +187,26 @@ class JournalPage extends StatelessWidget {
     );
   }
 
-  Widget _buildList(
-    List<JournalModel> list,
-    bool isLoading,
-    BuildContext context,
-  ) {
+  Widget _buildList(List<JournalModel> list, bool isLoading) {
     return Skeletonizer(
       enabled: isLoading,
       child: ListView.separated(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (_, i) => GestureDetector(
-          onTap: () {
-            AutoRouter.of(context)
-                .push(JournalStartRoute(journalModel: list[i]));
-          },
-          child: _buildJournalItemCardWidget(list[i], context),
-        ),
-        separatorBuilder: (_, __) => const SizedBox(
-          height: Styles.defaultSpacing,
-        ),
-        itemCount: list.length,
-      ),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (_, i) => GestureDetector(
+              onTap: () {
+                AutoRouter.of(context)
+                    .push(JournalStartRoute(journalModel: list[i]));
+              },
+              child: _buildJournalItemCardWidget(list[i])),
+          separatorBuilder: (_, __) => const SizedBox(
+            height: Styles.defaultSpacing,
+          ),
+          itemCount: list.length),
     );
   }
 
-  Widget _buildJournalItemCardWidget(
-    JournalModel journal,
-    BuildContext context,
-  ) {
+  Widget _buildJournalItemCardWidget(JournalModel journal) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -235,32 +224,31 @@ class JournalPage extends StatelessWidget {
           ),
           const SizedBox(width: Styles.biggerSpacing),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  journal.title,
-                  style: Theme.of(context).textTheme.displaySmall,
-                ),
-                const SizedBox(
-                  height: Styles.smallerSpacing,
-                ),
-                Text(
-                  journal.subtitle,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: ColorValues.grey50),
-                ),
-              ],
-            ),
-          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    journal.title,
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                  const SizedBox(
+                    height: Styles.smallerSpacing,
+                  ),
+                  Text(
+                    journal.subtitle,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: ColorValues.grey50),
+                  ),
+                ],
+              )),
         ],
       ),
     );
   }
 
-  Widget _buildTopSearchWidget(BuildContext context) {
+  Widget _buildTopSearchWidget() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
       child: CustomTextField(
